@@ -1,2 +1,4 @@
-# php_symfony_pet_project
-Final project for my php course
+.checkout
+=========
+
+A Symfony project created on December 11, 2018, 8:48 pm.

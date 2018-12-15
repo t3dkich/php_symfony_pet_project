@@ -46,12 +46,6 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=4096)
-     */
-    private $plainPassword;
-
-    /**
      * @var ArrayCollection|Offer[]
      *
      * @ORM\Column(name="offers")
@@ -147,25 +141,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
-     */
-    public function getPlainPassword()
-    {
-        return $this->plainPassword;
-    }
-
-    /**
-     * @param mixed $plainPassword
-     * @return User
-     */
-    public function setPlainPassword($plainPassword)
-    {
-        $this->plainPassword = $plainPassword;
-
-        return $this;
-    }
-
-    /**
      * @return Offer[]|ArrayCollection
      */
     public function getOffers()
@@ -201,7 +176,7 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        // TODO: Implement getRoles() method.
+        return [];
     }
 
     /**
@@ -223,7 +198,7 @@ class User implements UserInterface
      */
     public function getUsername()
     {
-        // TODO: Implement getUsername() method.
+        return $this->email;
     }
 
     /**
