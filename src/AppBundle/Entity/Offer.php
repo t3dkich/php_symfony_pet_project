@@ -22,6 +22,13 @@ class Offer
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=25, nullable=false)
+     */
+    private $title;
+
+    /**
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
@@ -32,7 +39,7 @@ class Offer
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateAdded", type="date")
+     * @ORM\Column(name="dateAdded", type="date", nullable=false)
      */
     private $dateAdded;
 
@@ -47,7 +54,7 @@ class Offer
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="offers")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
@@ -55,8 +62,8 @@ class Offer
     /**
      * @var Animal
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Animal")
-     * @ORM\JoinColumn(name="animal_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Animal", cascade={"persist"})
+     * @ORM\JoinColumn(name="animal_id", referencedColumnName="id", unique=true)
      */
     private $animal;
 
@@ -70,9 +77,9 @@ class Offer
     /**
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="sold_to", referencedColumnName="id")
+     * @ORM\JoinColumn(name="end_point_user", referencedColumnName="id", nullable=true)
      */
-    private $soldTo;
+    private $endPointUser;
 
     public function __construct()
     {
@@ -123,10 +130,12 @@ class Offer
 
     /**
      * @param $category
+     * @return Offer
      */
     public function setCategory($category)
     {
         $this->category = $category;
+        return $this;
     }
 
     /**
@@ -139,10 +148,12 @@ class Offer
 
     /**
      * @param string $animalType
+     * @return Offer
      */
     public function setAnimalType($animalType)
     {
         $this->animalType = $animalType;
+        return $this;
     }
 
     /**
@@ -155,10 +166,12 @@ class Offer
 
     /**
      * @param mixed $user
+     * @return Offer
      */
     public function setUser($user)
     {
         $this->user = $user;
+        return $this;
     }
 
     /**
@@ -171,10 +184,12 @@ class Offer
 
     /**
      * @param Animal $animal
+     * @return Offer
      */
     public function setAnimal($animal)
     {
         $this->animal = $animal;
+        return $this;
     }
 
     /**
@@ -187,26 +202,49 @@ class Offer
 
     /**
      * @param string $state
+     * @return Offer
      */
     public function setState($state)
     {
         $this->state = $state;
+        return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getSoldTo()
+    public function getEndPointUser()
     {
-        return $this->soldTo;
+        return $this->endPointUser;
     }
 
     /**
-     * @param mixed $soldTo
+     * @param mixed $endPointUser
+     * @return Offer
      */
-    public function setSoldTo($soldTo)
+    public function setEndPointUser($endPointUser)
     {
-        $this->soldTo = $soldTo;
+        $this->endPointUser = $endPointUser;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return Offer
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
     }
 
 

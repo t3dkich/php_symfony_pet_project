@@ -1,37 +1,66 @@
 {% include 'base.html.twig' %}
 
 {% block body %}
-    <div class="container body-content">
-        <div class="row">
-                <div class="col-md-6">
-                    <article>
-                        <header>
-                            <h2>{{ offer.animal.breed }}</h2>
-                        </header>
-
-                        <p>
-                            {{ offer.animalType.name }}
-                        </p>
-
-                        {#<a href="{{ path('article_view', {'id': article.id}) }}">#}
-                            {#<img src="{{ asset('uploads/images/' ~ article.image) }}" width="400" height="200" ></a>#}
-
-                        {#<small class="author">#}
-                            {#{{ article.author.fullName }}#}
-                        {#</small>#}
-
-                        {#Views: {{ article.viewCount }} <br />#}
-                        {#Likes: 1#}
-
-                        {#<footer>#}
-                            {#<div class="pull-right">#}
-                                {#<a class="btn btn-default btn-xs"#}
-                                   {#href="{{ path('article_view', {'id': article.id}) }}">Read more &raquo;</a>#}
-                            {#</div>#}
-                        {#</footer>#}
-                    </article>
-                </div>
+    <div class="container">
+        <div class="col-md-5">
+            <div class="form-area">
+                <form role="form" method="post">
+                    <br style="clear:both">
+                    <h3 style="margin-bottom: 25px; text-align: center;">Contact Form</h3>
+                    <div class="form-group col-md-8">
+                        <label for="inputState">State</label>
+                        <select name="offer[category]" id="inputState" class="form-control" >
+                            {% for category in categories %}
+                            <option  value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label for="inputState">State</label>
+                        <select name="offer[animalType]" id="inputState" class="form-control" >
+                            {% for animalCategory in animalCategories %}
+                                <option value="{{ animalCategory.id }}">{{ animalCategory.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="title" name="offer[title]" placeholder="Title" >
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="animalName" name="animal[name]" placeholder="Animal Name" >
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="animalBreed" name="animal[breed]" placeholder="Animal Breed"
+                               >
+                    </div>
+                    <div class="form-group">
+                        <input type="number" class="form-control" id="animalAge" name="animal[age]" placeholder="Animal Age"
+                               >
+                    </div>
+                    <div class="form-group">
+                        <input type="file" accept=".jpg, .png" class="form-control" id="articleImage" placeholder="Animal Image"
+                               name="animal[picture]">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" name="animal[description]" id="description" placeholder="Message" maxlength="140"
+                                  rows="7"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">Submit Form
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
+{% endblock %}
+
+{% block extraCSS %}
+    <style>
+        .form-area {
+            background-color: #FAFAFA;
+            padding: 10px 40px 60px;
+            margin: 10px 0 60px;
+            border: 1px solid GREY;
+        }
+    </style>
 {% endblock %}
 
