@@ -22,18 +22,12 @@ class Offer
     private $id;
 
     /**
-     * @var string
      *
-     * @ORM\Column(name="title", type="string", length=50)
-     */
-    private $title;
-
-    /**
-     * @var string
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      *
-     * @ORM\Column(name="description", type="text")
      */
-    private $description;
+    private $category;
 
     /**
      * @var \DateTime
@@ -45,23 +39,45 @@ class Offer
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="offers")
-     * @ORM\JoinColumn(name="author", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AnimalCategory")
+     * @ORM\JoinColumn(name="animal_category_id", referencedColumnName="id")
+     *
      */
-    private $author;
+    private $animalType;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
+     * @var Animal
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Animal")
+     * @ORM\JoinColumn(name="animal_id", referencedColumnName="id")
+     */
+    private $animal;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="picture", type="string", length=255)
+     * @ORM\Column(name="state", type="string", length=10, options={"default" : "open"})
      */
-    private $picture;
+    private $state;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="sold_to", referencedColumnName="id")
+     */
+    private $soldTo;
 
     public function __construct()
     {
         $this->dateAdded = new \DateTime('now');
     }
-
 
     /**
      * Get id
@@ -71,54 +87,6 @@ class Offer
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     *
-     * @return Offer
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Offer
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
 
     /**
@@ -146,51 +114,101 @@ class Offer
     }
 
     /**
-     * Set author
-     *
-     * @param string $author
-     *
-     * @return Offer
-     */
-    public function setAuthor($author)
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    /**
-     * Get author
-     *
      * @return string
      */
-    public function getAuthor()
+    public function getCategory()
     {
-        return $this->author;
+        return $this->category;
     }
 
     /**
-     * Set picture
-     *
-     * @param string $picture
-     *
-     * @return Offer
+     * @param $category
      */
-    public function setPicture($picture)
+    public function setCategory($category)
     {
-        $this->picture = $picture;
-
-        return $this;
+        $this->category = $category;
     }
 
     /**
-     * Get picture
-     *
      * @return string
      */
-    public function getPicture()
+    public function getAnimalType()
     {
-        return $this->picture;
+        return $this->animalType;
     }
+
+    /**
+     * @param string $animalType
+     */
+    public function setAnimalType($animalType)
+    {
+        $this->animalType = $animalType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return Animal
+     */
+    public function getAnimal()
+    {
+        return $this->animal;
+    }
+
+    /**
+     * @param Animal $animal
+     */
+    public function setAnimal($animal)
+    {
+        $this->animal = $animal;
+    }
+
+    /**
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param string $state
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSoldTo()
+    {
+        return $this->soldTo;
+    }
+
+    /**
+     * @param mixed $soldTo
+     */
+    public function setSoldTo($soldTo)
+    {
+        $this->soldTo = $soldTo;
+    }
+
+
 }
 

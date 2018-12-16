@@ -984,128 +984,252 @@
       <Charset>utf8mb4</Charset>
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
-    <table id="249" parent="11" name="migration_versions">
+    <table id="249" parent="11" name="animal">
       <Collation>utf8_unicode_ci</Collation>
     </table>
-    <table id="250" parent="11" name="offers">
+    <table id="250" parent="11" name="animal_categories">
       <Collation>utf8_unicode_ci</Collation>
     </table>
-    <table id="251" parent="11" name="users">
+    <table id="251" parent="11" name="categories">
       <Collation>utf8_unicode_ci</Collation>
     </table>
-    <column id="252" parent="249" name="version">
-      <Position>1</Position>
-      <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <key id="253" parent="249" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>version</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="254" parent="250" name="id">
+    <table id="252" parent="11" name="migration_versions">
+      <Collation>utf8_unicode_ci</Collation>
+    </table>
+    <table id="253" parent="11" name="offers">
+      <Collation>utf8_unicode_ci</Collation>
+    </table>
+    <table id="254" parent="11" name="users">
+      <Collation>utf8_unicode_ci</Collation>
+    </table>
+    <column id="255" parent="249" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="255" parent="250" name="title">
+    <column id="256" parent="249" name="name">
       <Position>2</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="256" parent="250" name="description">
+    <column id="257" parent="249" name="breed">
       <Position>3</Position>
+      <DataType>varchar(25)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="258" parent="249" name="description">
+      <Position>4</Position>
       <DataType>longtext|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="257" parent="250" name="dateAdded">
-      <Position>4</Position>
-      <DataType>date|0s</DataType>
+    <column id="259" parent="249" name="age">
+      <Position>5</Position>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="258" parent="250" name="author">
-      <Position>5</Position>
-      <DataType>int(11)|0s</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="259" parent="250" name="picture">
+    <column id="260" parent="249" name="picture">
       <Position>6</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="260" parent="250" name="IDX_DA460427BDAFD8C8">
-      <ColNames>author</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="261" parent="250" name="PRIMARY">
+    <key id="261" parent="249" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="262" parent="250" name="FK_DA460427BDAFD8C8">
-      <ColNames>author</ColNames>
-      <RefSchemaName>phpcourseproject</RefSchemaName>
-      <RefTableName>users</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <column id="263" parent="251" name="id">
+    <column id="262" parent="250" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="264" parent="251" name="email">
+    <column id="263" parent="250" name="name">
+      <Position>2</Position>
+      <DataType>varchar(15)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="264" parent="250" name="UNIQ_E7069E8C5E237E06">
+      <ColNames>name</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="265" parent="250" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="266" parent="250" name="UNIQ_E7069E8C5E237E06">
+      <ColNames>name</ColNames>
+      <UnderlyingIndexName>UNIQ_E7069E8C5E237E06</UnderlyingIndexName>
+    </key>
+    <column id="267" parent="251" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="268" parent="251" name="name">
+      <Position>2</Position>
+      <DataType>varchar(15)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="269" parent="251" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="270" parent="252" name="version">
+      <Position>1</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="271" parent="252" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>version</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="272" parent="253" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="273" parent="253" name="dateAdded">
+      <Position>2</Position>
+      <DataType>date|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="274" parent="253" name="user_id">
+      <Position>3</Position>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="275" parent="253" name="category_id">
+      <Position>4</Position>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="276" parent="253" name="animal_category_id">
+      <Position>5</Position>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="277" parent="253" name="animal_id">
+      <Position>6</Position>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="278" parent="253" name="state">
+      <Position>7</Position>
+      <DataType>varchar(10)|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;open&apos;</DefaultExpression>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="279" parent="253" name="IDX_DA460427A76ED395">
+      <ColNames>user_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="280" parent="253" name="IDX_DA46042712469DE2">
+      <ColNames>category_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="281" parent="253" name="IDX_DA460427B5FC4E5B">
+      <ColNames>animal_category_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="282" parent="253" name="IDX_DA4604278E962C16">
+      <ColNames>animal_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="283" parent="253" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="284" parent="253" name="FK_DA460427A76ED395">
+      <ColNames>user_id</ColNames>
+      <RefSchemaName>phpcourseproject</RefSchemaName>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="285" parent="253" name="FK_DA46042712469DE2">
+      <ColNames>category_id</ColNames>
+      <RefSchemaName>phpcourseproject</RefSchemaName>
+      <RefTableName>categories</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="286" parent="253" name="FK_DA460427B5FC4E5B">
+      <ColNames>animal_category_id</ColNames>
+      <RefSchemaName>phpcourseproject</RefSchemaName>
+      <RefTableName>animal_categories</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="287" parent="253" name="FK_DA4604278E962C16">
+      <ColNames>animal_id</ColNames>
+      <RefSchemaName>phpcourseproject</RefSchemaName>
+      <RefTableName>animal</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="288" parent="254" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="289" parent="254" name="email">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="265" parent="251" name="name">
+    <column id="290" parent="254" name="name">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="266" parent="251" name="password">
+    <column id="291" parent="254" name="password">
       <Position>4</Position>
       <DataType>varchar(64)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="267" parent="251" name="offers">
-      <Position>5</Position>
-      <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="268" parent="251" name="UNIQ_1483A5E9E7927C74">
+    <index id="292" parent="254" name="UNIQ_1483A5E9E7927C74">
       <ColNames>email</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="269" parent="251" name="UNIQ_1483A5E95E237E06">
+    <index id="293" parent="254" name="UNIQ_1483A5E95E237E06">
       <ColNames>name</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="270" parent="251" name="PRIMARY">
+    <key id="294" parent="254" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="271" parent="251" name="UNIQ_1483A5E9E7927C74">
+    <key id="295" parent="254" name="UNIQ_1483A5E9E7927C74">
       <ColNames>email</ColNames>
       <UnderlyingIndexName>UNIQ_1483A5E9E7927C74</UnderlyingIndexName>
     </key>
-    <key id="272" parent="251" name="UNIQ_1483A5E95E237E06">
+    <key id="296" parent="254" name="UNIQ_1483A5E95E237E06">
       <ColNames>name</ColNames>
       <UnderlyingIndexName>UNIQ_1483A5E95E237E06</UnderlyingIndexName>
     </key>

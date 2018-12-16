@@ -48,8 +48,7 @@ class User implements UserInterface
     /**
      * @var ArrayCollection|Offer[]
      *
-     * @ORM\Column(name="offers")
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Offer", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Offer", mappedBy="user")
      */
     private $offers;
 

@@ -1,42 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="main">
-    <!-- Sign up form -->
-    <section class="signup">
-        <div class="container">
-            <div class="signup-content">
-                <div class="signup-form">
-                    <h2 class="form-title">Sign up</h2>
-                    <form method="POST" class="register-form" id="register-form">
+    <div class="container body-content span=2 offset=2 center">
+        <div class="well">
+            <div class="container body-content span=8 offset=2">
+                <div class="well">
+                    <form class="form-horizontal" method="post">
                         <div class="form-group">
-                            <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                            <input type="text" name="user[name]" id="name" placeholder="Your Name"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="email"><i class="zmdi zmdi-email"></i></label>
-                            <input type="email" name="user[email]" id="email" placeholder="Your Email"/>
+                            <label for="user[email]">Email address</label>
+                            <input type="email" class="form-control" name="user[email]" id="user[email]" aria-describedby="emailHelp"
+                                   placeholder="Enter email">
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                                else.
+                            </small>
                         </div>
                         <div class="form-group">
-                            <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                            <input type="password" name="user[password][first]" id="password" placeholder="Password"/>
+                            <label class="col-sm-4 control-label" for="user[name]">Your Name</label>
+                            <input type="text" class="form-control" name="user[name]" id="user[name]" placeholder="Enter your name">
                         </div>
                         <div class="form-group">
-                            <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                            <input type="password" name="user[password][second]" id="repeatPassword" placeholder="Repeat your password"/>
+                            <label class="col-sm-4 control-label" for="user[password][first]">Password</label>
+                            <input type="password" class="form-control" name="user[password][first]" id="user[password][first]" placeholder="Password">
                         </div>
-                        <div class="form-group form-button">
-                            <input type="submit" name="register" id="register" class="form-submit" value="Register"/>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="user[password][second]">Repeat Password</label>
+                            <input type="password" class="form-control" name="user[password][second]" id="user[password][second]"
+                                   placeholder="Repeat Password">
                         </div>
-                        {{  form_row(form._token) }}
+                        {{ form_row(form._token) }}
+                        <button type="submit" class="btn btn-primary">Register</button>
                     </form>
-                </div>
-                <div class="signup-image">
-                    <figure><img src="{{ asset('images/signup-image.jpg') }}" alt="sing up image"></figure>
-                    <a href="{{ path('security_login') }}" class="signup-image-link">I am already member</a>
                 </div>
             </div>
         </div>
-    </section>
-</div>
+    </div>
 {% endblock %}

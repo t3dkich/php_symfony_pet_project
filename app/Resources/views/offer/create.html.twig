@@ -1,0 +1,37 @@
+{% include 'base.html.twig' %}
+
+{% block body %}
+    <div class="container body-content">
+        <div class="row">
+                <div class="col-md-6">
+                    <article>
+                        <header>
+                            <h2>{{ offer.animal.breed }}</h2>
+                        </header>
+
+                        <p>
+                            {{ offer.animalType.name }}
+                        </p>
+
+                        {#<a href="{{ path('article_view', {'id': article.id}) }}">#}
+                            {#<img src="{{ asset('uploads/images/' ~ article.image) }}" width="400" height="200" ></a>#}
+
+                        {#<small class="author">#}
+                            {#{{ article.author.fullName }}#}
+                        {#</small>#}
+
+                        {#Views: {{ article.viewCount }} <br />#}
+                        {#Likes: 1#}
+
+                        {#<footer>#}
+                            {#<div class="pull-right">#}
+                                {#<a class="btn btn-default btn-xs"#}
+                                   {#href="{{ path('article_view', {'id': article.id}) }}">Read more &raquo;</a>#}
+                            {#</div>#}
+                        {#</footer>#}
+                    </article>
+                </div>
+        </div>
+    </div>
+{% endblock %}
+
