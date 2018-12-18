@@ -25,7 +25,7 @@ class Animal
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=15)
+     * @ORM\Column(name="name", type="string", length=15, nullable=true)
      */
     private $name;
 
@@ -53,7 +53,7 @@ class Animal
     /**
      * @var string
      *
-     * @ORM\Column(name="picture", type="string", length=255)
+     * @ORM\Column(name="picture", type="string", length=255, nullable=true)
      */
     private $picture;
 

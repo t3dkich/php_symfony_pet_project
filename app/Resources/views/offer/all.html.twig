@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container body-content">
+        <div class="row">
+            {% for offer in offers %}
+                <div class="col-md-6">
+                    <article>
+                        <header>
+                            <h2>{{ offer.title }}</h2>
+                        </header>
+
+                        <p>
+                            {{ offer.animalType.name }}
+                        </p>
+
+                        <a href="#">
+                            <img src="{{ asset('uploads/animal_images/' ~ offer.animal.picture) }}" width="500"
+                                 height="300"></a>
+
+                        <p><small class="author">
+                            {{ offer.category.name }}
+                        </small></p>
+
+                        <span>Animal Name:</span> {{ offer.animal.name }} <br/>
+
+                        {% if offer.price %}
+                        <span><span>Price</span>{{ offer.price }}</span>
+                        {% endif %}
+
+                        <footer>
+                            <div class="pull-right">
+                                <a class="btn btn-primary pull-right"
+                                   href="#">Read more &raquo;</a>
+                            </div>
+                            {% if app.user == offer.user %}
+                                <div class="pull-right">
+                                    <a class="btn btn-primary pull-left"
+                                       href="{{ path('offer_edit', {'id' : offer.id}) }}">Edit &raquo;</a>
+                                </div>
+                            {% endif %}
+                        </footer>
+                    </article>
+                </div>
+                <br />
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block extraCSS %}
+
+{% endblock %}
+

@@ -81,6 +81,13 @@ class Offer
      */
     private $endPointUser;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="price", type="decimal", nullable=true)
+     */
+    private $price;
+
     public function __construct()
     {
         $this->dateAdded = new \DateTime('now');
@@ -243,6 +250,25 @@ class Offer
     public function setTitle($title)
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param float $price
+     * @return Offer
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
 
         return $this;
     }

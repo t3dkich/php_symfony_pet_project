@@ -24,6 +24,13 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+            $existingUser = $this->getDoctrine()->getRepository(User::class)
+                ->findOneBy(['email' => $user->getEmail()]);
+
+            if ($existingUser) {
+                $this->addFlash('info', "Username with email " . $existingUser->getEmail() . " already taken!");
+                return $this->render('user/register.html.twig', ['form' => $form->createView()]);
+            }
 
             $password = $this->get('security.password_encoder')
                 ->encodePassword($user, $user->getPassword());

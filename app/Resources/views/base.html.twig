@@ -18,11 +18,11 @@
                 <div class="collapse navbar-collapse center" id="navbarColor01">
                     <ul class="navbar-nav mr-auto center">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">All Offers</a>
+                            <a class="nav-link" href="{{ path('offers_all') }}">All Offers</a>
                         </li>
                         {% if app.user %}
                             <li class="nav-item">
-                                <a class="nav-link" href="#">My Offers</a>
+                                <a class="nav-link" href="{{ path('offers_my') }}">My Offers</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Offers Sorted By...</a>
