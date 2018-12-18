@@ -25,7 +25,7 @@ class OfferController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function editAction(Request $request ,$id)
+    public function editAction(Request $request, $id)
     {
         $offer = new Offer();
         $animal = new Animal();
@@ -112,16 +112,27 @@ class OfferController extends Controller
     /**
      * @Route("/offer/all", name="offers_all")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAllOffersAction()
+    public function showAllOffersAction(Request $request)
     {
         $offers = $this->getDoctrine()->getRepository(Offer::class)->findBy([
             'state' => 'open'
         ]);
 
-        return $this->render('offer/all.html.twig', ['offers' => $offers]);
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $offers, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            4/*limit per page*/
+        );
+
+        // parameters to template
+        return $this->render('offer/all.html.twig', array('pagination' => $pagination));
     }
+
+        //return $this->render('offer/all.html.twig', ['offers' => $offers]);
 
     /**
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
@@ -173,3 +184,4 @@ class OfferController extends Controller
         ]);
     }
 }
+

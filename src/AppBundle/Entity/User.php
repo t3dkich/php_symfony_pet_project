@@ -52,9 +52,18 @@ class User implements UserInterface
      */
     private $offers;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Message", mappedBy="id")
+     *
+     */
+    private $messages;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     /**
@@ -210,5 +219,22 @@ class User implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
+    /**
+     * @param ArrayCollection $messages
+     */
+    public function setMessages($messages)
+    {
+        $this->messages = $messages;
+    }
+
 }
 

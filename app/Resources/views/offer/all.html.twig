@@ -3,47 +3,71 @@
 {% block body %}
     <div class="container body-content">
         <div class="row">
-            {% for offer in offers %}
-                <div class="col-md-6">
-                    <article>
-                        <header>
-                            <h2>{{ offer.title }}</h2>
-                        </header>
+            {#{% for offer in offers %}#}
 
-                        <p>
-                            {{ offer.animalType.name }}
-                        </p>
+            {#<div class="count">#}
+                {#{{ pagination.getTotalItemCount }}#}
+            {#</div>#}
+            <table>
+                {#<tr>#}
+                {# sorting of properties based on query components #}
+                {#<th>{{ knp_pagination_sortable(pagination, 'Id', 'a.id') }}</th>#}
+                {#<th{% if pagination.isSorted('a.Title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'a.title') }}</th>#}
+                {#<th>{{ knp_pagination_sortable(pagination, 'Release', ['a.date', 'a.time']) }}</th>#}
+                {#</tr>#}
 
-                        <a href="#">
-                            <img src="{{ asset('uploads/animal_images/' ~ offer.animal.picture) }}" width="500"
-                                 height="300"></a>
+                {# table body #}
+                {# @var offer \AppBundle\Entity\Offer#}
+                {% for offer in pagination %}
+                    <tr {% if loop.index is odd %}class="color"{% endif %}>
+                        <div class="col-md-6">
+                            <article>
+                                <header>
+                                    <h2>{{ offer.title }}</h2>
+                                </header>
 
-                        <p><small class="author">
-                            {{ offer.category.name }}
-                        </small></p>
+                                <p>
+                                    {{ offer.animalType.name }}
+                                </p>
 
-                        <span>Animal Name:</span> {{ offer.animal.name }} <br/>
+                                <a href="#">
+                                    <img src="{{ asset('uploads/animal_images/' ~ offer.animal.picture) }}" width="500"
+                                         height="300"></a>
 
-                        {% if offer.price %}
-                        <span><span>Price</span>{{ offer.price }}</span>
-                        {% endif %}
+                                <p>
+                                    <small class="author">
+                                        {{ offer.category.name }}
+                                    </small>
+                                </p>
 
-                        <footer>
-                            <div class="pull-right">
-                                <a class="btn btn-primary pull-right"
-                                   href="#">Read more &raquo;</a>
-                            </div>
-                            {% if app.user == offer.user %}
-                                <div class="pull-right">
-                                    <a class="btn btn-primary pull-left"
-                                       href="{{ path('offer_edit', {'id' : offer.id}) }}">Edit &raquo;</a>
-                                </div>
-                            {% endif %}
-                        </footer>
-                    </article>
-                </div>
-                <br />
-            {% endfor %}
+                                <span>Animal Name:</span> {{ offer.animal.name }} <br/>
+
+                                {% if offer.price %}
+                                    <span><span>Price</span>{{ offer.price }}</span>
+                                {% endif %}
+
+                                <footer>
+                                    <div class="pull-right">
+                                        <a class="btn btn-primary pull-right"
+                                           href="#">Read more &raquo;</a>
+                                    </div>
+                                    {% if app.user == offer.user %}
+                                        <div class="pull-right">
+                                            <a class="btn btn-primary"
+                                               href="{{ path('offer_edit', {'id' : offer.id}) }}">Edit &raquo;</a>
+                                        </div>
+                                    {% endif %}
+                                </footer>
+                            </article>
+                        </div>
+                        <br/>
+                    </tr>
+                {% endfor %}
+            </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <form method="post">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{ app.user.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">to {{ endUser.name }}</h6>
+                <p class="card-text">
+                    <label>
+                        <textarea name="message[content]"></textarea>
+                    </label>
+                </p>
+                <button type="submit" class="card-link">Send</button>
+                <a href="#" class="card-link">Cancel</a>
+            </div>
+        </div>
+    </form>
+{% endblock %}
