@@ -56,24 +56,27 @@
     </div>
 {% endblock %}
 
+<script>
+    $("#category").on('change', () => {
+        let catVal = parseInt($('#category').val());
+        let nameInput = $('#animalName');
+        let priceInput = $('#price');
+        if (catVal === 4) {
+            nameInput.prop('hidden', true);
+            priceInput.prop('hidden', true);
+        } else if (catVal === 3) {
+            nameInput.prop('hidden', false);
+            priceInput.prop('hidden', true);
+        } else if (catVal === 1) {
+            nameInput.prop('hidden', true)
+
+        } else {
+            nameInput.prop('hidden', false);
+            priceInput.prop('hidden', false);
+        }
+    })
+</script>
 {% block someJS %}
-    <script>
-        $("#category").on('change', () => {
-            let catVal = parseInt($('#category').val());
-            let nameInput = $('#animalName');
-            let priceInput = $('#price');
-            if (catVal === 4) {
-                nameInput.prop('hidden', true);
-                priceInput.prop('hidden', true);
-            } else if (catVal === 3) {
-                nameInput.prop('hidden', false);
-                priceInput.prop('hidden', true);
-            } else {
-                nameInput.prop('hidden', false);
-                priceInput.prop('hidden', false);
-            }
-        })
-    </script>
 {% endblock %}
 
 {% block extraCSS %}

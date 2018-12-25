@@ -95,7 +95,7 @@
                     '<input required type="text" class="form-control" id="price"\n' +
                     'name="offer[price]" placeholder="Price">\n' +
                     '</div>');
-                let form = $('#form div:eq(2)').after(el);
+                $('#form div:eq(2)').after(el);
             } else {
                 nameInput.prop('hidden', false);
                 priceInput.prop('hidden', true);

@@ -9,6 +9,10 @@ use AppBundle\Entity\Offer;
 use AppBundle\Entity\User;
 use AppBundle\Form\AnimalType;
 use AppBundle\Form\OfferType;
+use AppBundle\Service\AnimalCategoryService;
+use AppBundle\Service\CategoryService;
+use AppBundle\Service\OfferService;
+use AppBundle\Service\UserService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -96,57 +100,56 @@ class OfferController extends Controller
     /**
      * @Route("/offer/my", name="offers_my")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param OfferService $offerService
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showMyOffers()
+    public function myAction(OfferService $offerService)
     {
-        $myOffers = $this->getDoctrine()->getRepository(Offer::class)
-            ->findBy(['user' => $this->getUser()]);
 
         return $this->render('offer/my.html.twig', [
-            'myOffers' => $myOffers
+            'myOffers' => $offerService->getMy($this->getUser())
         ]);
-
     }
 
     /**
      * @Route("/offer/all", name="offers_all")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param Request $request
+     * @param OfferService $offerService
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAllOffersAction(Request $request)
+    public function allAction(Request $request, OfferService $offerService)
     {
-        $offers = $this->getDoctrine()->getRepository(Offer::class)->findBy([
-            'state' => 'open'
+        $pagination = $offerService
+            ->paginate($request->query->getInt('page', 1), $offerService->getAllOpen());
+
+        return $this->render('offer/all.html.twig', [
+            'pagination' => $pagination
         ]);
-
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $offers, /* query NOT result */
-            $request->query->getInt('page', 1)/*page number*/,
-            4/*limit per page*/
-        );
-
-        // parameters to template
-        return $this->render('offer/all.html.twig', array('pagination' => $pagination));
     }
-
-        //return $this->render('offer/all.html.twig', ['offers' => $offers]);
 
     /**
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Route("/offer/create", name="offer_create")
      * @param Request $request
+     * @param CategoryService $categoryService
+     * @param AnimalCategoryService $animalCategoryService
+     * @param UserService $userService
+     * @param OfferService $offerService
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request,
+                                 CategoryService $categoryService,
+                                 AnimalCategoryService $animalCategoryService,
+                                 UserService $userService,
+                                 OfferService $offerService)
     {
         $offer = new Offer();
         $animal = new Animal();
-        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
-        $animalCategories = $this->getDoctrine()->getRepository(AnimalCategory::class)->findAll();
+        [$categories, $animalCategories] = [
+            $categoryService->getAll(), $animalCategoryService->getAll()
+        ];
 
         $form = $this->createForm(OfferType::class, $offer);
         $animalForm = $this->createForm(AnimalType::class, $animal);
@@ -154,28 +157,12 @@ class OfferController extends Controller
         $animalForm->handleRequest($request);
 
         if ($animalForm->isSubmitted() && $form->isSubmitted()) {
-            $helperUser = $this->getDoctrine()->getRepository(User::class)->find(-1);
-            $em = $this->getDoctrine()->getManager();
-            $offer
-                ->setAnimal($animal)
-                ->setDateAdded(new \DateTime('now'))
-                ->setUser($this->getUser())
-                ->setEndPointUser($helperUser)
-                ->setState('open');
 
-            /** @var UploadedFile $picture */
-            $picture = $form->getData()->getAnimal()->getPicture();
-            if ($picture) {
-                $fileName = md5(uniqid()) . '.' . $picture->guessExtension();
-                $picture->move($this->getParameter('image_directory'), $fileName);
-                $offer->getAnimal()->setPicture($fileName);
-            }
-
-            $em->persist($offer);
-            $em->flush();
+            $helperUser = $userService->getHelper();
+            $picture = $animalForm->getData()->getPicture();
+            $offerService->create($offer, $this->getUser(), $animal, $picture, $helperUser);
 
             return $this->redirectToRoute('homepage');
-
         }
 
         return $this->render('offer/create.html.twig', [
