@@ -5,40 +5,68 @@
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <div class="container body-content span=2 offset=2 center">
-        <div class="well">
-            <div class="container body-content span=8 offset=2">
-                <div class="well">
-                    <form action="{{ path('security_login') }}" class="form-horizontal" method="post">
-                        <div class="form-group">
-                            <label for="user[email]">Email address</label>
-                            <input type="email" class="form-control" name="_username" id="username"
-                                   aria-describedby="emailHelp"
-                                   placeholder="Enter email">
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                                else.
-                            </small>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label" for="user[password][first]">Password</label>
-                            <input type="password" class="form-control" name="_password" id="password"
-                                   placeholder="Password">
-                        </div>
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-                        <button type="submit" class="btn btn-primary">Register</button>
-                    </form>
+    {#<div class="row justify-content-center mt-5">#}
+        {#<h2 class="text-center mt-5 display-4">#}
+            {#Register Here#}
+        {#</h2>#}
+        {#<div class="well">#}
+            {#<div class="container body-content span=8 offset=2">#}
+                {#<div class="well">#}
+                    {#<form action="{{ path('security_login') }}" class="form-horizontal" method="post">#}
+                        {#<div class="form-group">#}
+                            {#<label for="user[email]">Email address</label>#}
+                            {#<input type="email" class="form-control" name="_username" id="username"#}
+                                   {#aria-describedby="emailHelp"#}
+                                   {#placeholder="Enter email">#}
+                            {#<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone#}
+                                {#else.#}
+                            {#</small>#}
+                        {#</div>#}
+                        {#<div class="form-group">#}
+                            {#<label class="col-sm-4 control-label" for="user[password][first]">Password</label>#}
+                            {#<input type="password" class="form-control" name="_password" id="password"#}
+                                   {#placeholder="Password">#}
+                        {#</div>#}
+                        {#<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>#}
+                        {#<button type="submit" class="btn btn-primary">Register</button>#}
+                    {#</form>#}
+                {#</div>#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
+
+
+
+    <div class="row justify-content-center mt-5">
+        <div class="well col-md-4 mt-5">
+            <h2 class="text-center mt-5 display-4">
+                Register Here
+            </h2>
+            <form action="{{ path('security_login') }}" class="form-horizontal mt-5" method="post">
+                <div class="form-group">
+                    <label for="user[email]">Email address</label>
+                    <input type="email" class="form-control" name="_username" id="username"
+                           placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                        else.
+                    </small>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="user[password][first]">Password</label>
+                    <input  type="password" class="form-control" name="_password" id="password" placeholder="Password">
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                    <div class="col-md-6 margin-2">
+                        <a id="lnk" class="nav-link offset-7" href="{{ path('security_login') }}">Login</a>
+                    </div>
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+
+            </form>
         </div>
     </div>
 {% endblock %}
 
-{% block footer %}
-    <div class="main">
-        <footer>
-            <div class="container modal-footer">
-                <p>&copy; 2018 - Software University PHP-Symfony project</p>
-            </div>
-        </footer>
-    </div>
-{% endblock %}

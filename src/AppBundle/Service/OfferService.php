@@ -51,7 +51,7 @@ class OfferService
         $pagination = $paginator->paginate(
             $offers, /* query NOT result */
             $page/*page number*/,
-            4/*limit per page*/
+            6/*limit per page*/
         );
 
         return $pagination;
