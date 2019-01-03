@@ -13,7 +13,7 @@ use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class UserService
+class UserService implements UserServiceInterface
 {
     /**
      * @var EntityManagerInterface
@@ -53,5 +53,13 @@ class UserService
         return $this->entityManager
             ->getRepository(User::class)
             ->find(-1);
+    }
+
+    public function getByEmail(string $email)
+    {
+
+        return $this->entityManager
+            ->getRepository(User::class)
+            ->findOneBy(['email' => $email]);
     }
 }

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="card mr-5 mb-5" style="width: 18rem;">
+        <img class="card-img-top" height="200px" src="{{ asset('uploads/animal_images/' ~ offer.animal.picture) }}"
+             alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{{ offer.title }}</h5>
+            <p class="card-text">{{ offer.animal.description }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{ offer.animalType.name }}</li>
+            <li class="list-group-item">{{ offer.category.name }}</li>
+            {% if offer.animal.name %}
+                <li class="list-group-item">{{ offer.animal.name }}</li>
+            {% endif %}
+            {% if offer.price %}
+                <li class="list-group-item">{{ offer.price }}</li>
+            {% endif %}
+        </ul>
+    </div>
+    {% for msg in app.session.flashbag.get('info') %}
+        <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+            {{ msg }}
+        </div>
+    {% endfor %}
+    <form method="post" action="{{ path('offer_cancel', {'id': offer.id}) }}">
+        <div>
+            <h3>Cancel this offer and don't sell to nobody
+                <button type="submit" class="btn">Close</button>
+            </h3>
+        </div>
+    </form>
+    <hr>
+    <hr>
+    <form method="post">
+        <div>
+            Sell To User: <label>
+                <input type="text" name="user[email]" placeholder="Enter User Email Address here">
+            </label>
+            <button type="submit" class="btn">Sell</button>
+        </div>
+    </form>
+    <br/>
+    <div>
+        {% if messages %}
+            <h4>Users messaged this offer</h4>
+            {% for message in messages %}
+                <span>{{ message.startUser.email }} || </span>
+            {% endfor %}
+        {% else %}
+            <h4>Nobody messaged this offer</h4>
+        {% endif %}
+    </div>
+{% endblock %}

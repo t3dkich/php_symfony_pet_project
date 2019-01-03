@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,7 +31,7 @@ class Offer
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="offers")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      *
      */
@@ -46,7 +47,7 @@ class Offer
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AnimalCategory")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AnimalCategory", inversedBy="offers")
      * @ORM\JoinColumn(name="animal_category_id", referencedColumnName="id")
      *
      */
@@ -62,7 +63,7 @@ class Offer
     /**
      * @var Animal
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Animal", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Animal", inversedBy="offers", cascade={"persist"})
      * @ORM\JoinColumn(name="animal_id", referencedColumnName="id", unique=true)
      */
     private $animal;
@@ -88,9 +89,37 @@ class Offer
      */
     private $price;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Message", mappedBy="offer")
+     */
+    private $messages;
+
+    /**
+     * Offer constructor.
+     * @throws \Exception
+     */
     public function __construct()
     {
         $this->dateAdded = new \DateTime('now');
+        $this->messages = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMessages(): ArrayCollection
+    {
+        return $this->messages;
+    }
+
+    /**
+     * @param ArrayCollection $messages
+     */
+    public function setMessages(ArrayCollection $messages): void
+    {
+        $this->messages = $messages;
     }
 
     /**

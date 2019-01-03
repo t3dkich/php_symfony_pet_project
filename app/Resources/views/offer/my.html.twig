@@ -3,46 +3,49 @@
 {% block body %}
     <div class="container body-content">
         <div class="row">
-            {% for offer in myOffers %}
-                <div class="col-md-6">
-                    <article>
-                        <header>
-                            <h2>{{ offer.title }}</h2>
-                        </header>
-
-                        <p>
-                            {{ offer.animalType.name }}
-                        </p>
-
-                        <a href="#">
-                            <img src="{{ asset('uploads/animal_images/' ~ offer.animal.picture) }}" width="500"
-                                 height="300" alt="Image"></a>
-
-                        <p><small class="author">
-                                {{ offer.category.name }}
-                            </small></p>
-
-                        <span>Animal Name:</span> {{ offer.animal.name }} <br/>
-
-                        {% if offer.price %}
-                            <span><span>Price: </span>{{ offer.price }}</span>
-                        {% endif %}
-
-                        <footer>
-                            <div class="pull-right">
-                                <a class="btn btn-primary pull-right"
-                                   href="#">Read more &raquo;</a>
+            <table>
+                {# @var offer \AppBundle\Entity\Offer#}
+                {% for offer in pagination %}
+                    <tr {% if loop.index is odd %}class="color"{% endif %}>
+                        <div class="card mr-5 mb-5" style="width: 18rem;">
+                            <img class="card-img-top" height="200px" src="{{ asset('uploads/animal_images/' ~ offer.animal.picture) }}" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ offer.title }}</h5>
+                                <p class="card-text">{{ offer.animal.description }}</p>
                             </div>
-                            <div class="pull-right">
-                                <a class="btn btn-primary pull-left"
-                                   href="{{ path('offer_edit', {'id' : offer.id}) }}">Edit &raquo;</a>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">{{ offer.animalType.name }}</li>
+                                <li class="list-group-item">{{ offer.category.name }}</li>
+                                {% if offer.animal.name %}
+                                    <li class="list-group-item">{{ offer.animal.name }}</li>
+                                {% endif %}
+                                {% if offer.price %}
+                                    <li class="list-group-item">{{ offer.price }}</li>
+                                {% endif %}
+                            </ul>
+                            <div class="card-body">
+                                {% if app.user == offer.user %}
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a class="btn btn-primary pull-right"
+                                               href="{{ path('offer_details', {'id' : offer.id}) }}">Read more &raquo;</a>
+                                        </div>
+                                        <div class="col-md-6 margin-2">
+                                            <a class="btn btn-primary ml-5"
+                                               href="{{ path('offer_edit', {'id' : offer.id}) }}">Edit &raquo;</a>
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
-                        </footer>
-                    </article>
-                </div>
-                <br />
-
-            {% endfor %}
+                        </div>
+                        <br/>
+                    </tr>
+                {% endfor %}
+            </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
         </div>
     </div>
 {% endblock %}

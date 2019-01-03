@@ -3,24 +3,118 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Animal;
-use AppBundle\Entity\AnimalCategory;
-use AppBundle\Entity\Category;
 use AppBundle\Entity\Offer;
-use AppBundle\Entity\User;
 use AppBundle\Form\AnimalType;
 use AppBundle\Form\OfferType;
-use AppBundle\Service\AnimalCategoryService;
-use AppBundle\Service\CategoryService;
-use AppBundle\Service\OfferService;
-use AppBundle\Service\UserService;
+use AppBundle\Service\AnimalTypeServiceInterface;
+use AppBundle\Service\CategoryServiceInterface;
+use AppBundle\Service\MessageServiceInterface;
+use AppBundle\Service\OfferServiceInterface;
+use AppBundle\Service\UserServiceInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @property AnimalTypeServiceInterface animalTypeService
+ * @property OfferServiceInterface offerService
+ * @property UserServiceInterface userService
+ * @property CategoryServiceInterface categoryService
+ * @property MessageServiceInterface messageService
+ */
 class OfferController extends Controller
 {
+    /**
+     * OfferController constructor.
+     * @param OfferServiceInterface $offerService
+     * @param UserServiceInterface $userService
+     * @param AnimalTypeServiceInterface $animalTypeService
+     * @param CategoryServiceInterface $categoryService
+     * @param MessageServiceInterface $messageService
+     */
+    public function __construct(
+        OfferServiceInterface $offerService,
+        UserServiceInterface $userService,
+        AnimalTypeServiceInterface $animalTypeService,
+        CategoryServiceInterface $categoryService,
+        MessageServiceInterface $messageService)
+    {
+        $this->offerService = $offerService;
+        $this->userService = $userService;
+        $this->animalTypeService = $animalTypeService;
+        $this->categoryService = $categoryService;
+        $this->messageService = $messageService;
+    }
+
+    /**
+     * @Route("/offer/cancel/{id}", name="offer_cancel")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function CancelAction($id)
+    {
+        $this->offerService->cancel($id);
+
+        return $this->redirectToRoute('offers_all');
+    }
+
+    /**
+     * @Route("/offer/sell_close/{id}", name="sell_close")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function sellCloseAction(Request $request, $id)
+    {
+        $offer = $this->offerService->getById($id);
+
+        if ($request->isMethod('post') && $request->request->get('user')['email']) {
+
+            $email = $request->request->get('user')['email'];
+
+            if (null !== $email) {
+                $user = $this->userService->getByEmail($email);
+
+                if (null !== $user) {
+                    $this->offerService->sellToUser($user, $offer);
+                } else {
+                    $this->addFlash('info',
+                        "Username with email " . $email . " doesn't exist!");
+
+                    return $this->render('offer/sell_close.html.twig', [
+                        'offer' => $offer,
+                        'messages' => $this->messageService->getGroupedMessages($offer)
+                    ]);
+                }
+
+            }
+
+            return $this->redirectToRoute('offers_all');
+        }
+
+        return $this->render('offer/sell_close.html.twig', [
+            'offer' => $offer,
+            'messages' => $this->messageService->getGroupedMessages($offer)
+        ]);
+    }
+
+    /**
+     * @Route("/offer/details/{id}", name="offer_details")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function detailsAction($id)
+    {
+
+        return $this->render('offer/details.html.twig', [
+            'offer' => $this->offerService->getById($id),
+            'messages' => $this->messageService->findByOfferId($id)
+        ]);
+    }
+
     /**
      * @Route("/offer/edit/{id}", name="offer_edit")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
@@ -33,12 +127,14 @@ class OfferController extends Controller
     {
         $offer = new Offer();
         $animal = new Animal();
-        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
-        $animalCategories = $this->getDoctrine()->getRepository(AnimalCategory::class)->findAll();
-        $offerExist = $this->getDoctrine()->getRepository(Offer::class)
-            ->find($id);
+        [$categories, $animalCategories, $existingOffer] = [
+            $this->categoryService->getAll(),
+            $this->animalTypeService->getAll(),
+            $this->offerService->getById($id)
+        ];
 
-        if (!$offerExist) {
+        if (!$existingOffer) {
+
             return $this->render('default/index.html.twig');
         }
 
@@ -48,50 +144,15 @@ class OfferController extends Controller
         $animalForm->handleRequest($request);
 
         if ($animalForm->isSubmitted() && $form->isSubmitted()) {
-            $helperUser = $this->getDoctrine()->getRepository(User::class)->find(-1);
-            $em = $this->getDoctrine()->getManager();
 
-            if (!$animal->getPicture()) {
-                $animal->setPicture($offerExist->getAnimal()->getPicture());
-            }
-
-            /** @var Animal $animalEdited */
-            $animalEdited = $offerExist->getAnimal();
-            $animalEdited
-                ->setName($animal->getName())
-                ->setBreed($animal->getBreed())
-                ->setDescription($animal->getDescription())
-                ->setPicture($animal->getPicture())
-                ->setAge($animal->getAge());
-
-            $offerExist
-                ->setTitle($offer->getTitle())
-                ->setPrice($offer->getPrice())
-                ->setCategory($offer->getCategory())
-                ->setAnimalType($offer->getAnimalType())
-                ->setAnimal($animalEdited)
-                ->setDateAdded(new \DateTime('now'))
-                ->setUser($this->getUser())
-                ->setEndPointUser($helperUser)
-                ->setState('open');
-
-            /** @var UploadedFile $picture */
-            $picture = $animalEdited->getPicture();
-            if ($picture && gettype($picture) !== 'string') {
-                $fileName = md5(uniqid()) . '.' . $picture->guessExtension();
-                $picture->move($this->getParameter('image_directory'), $fileName);
-                $offerExist->getAnimal()->setPicture($fileName);
-            }
-
-            $em->persist($offerExist);
-            $em->flush();
+            $this->offerService->edit($animal, $existingOffer, $offer, $this->userService->getHelper(), $this->getUser());
 
             return $this->redirectToRoute('homepage');
 
         }
 
         return $this->render('offer/edit.html.twig', [
-            'offer' => $offerExist,
+            'offer' => $existingOffer,
             'categories' => $categories,
             'animalCategories' => $animalCategories
         ]);
@@ -100,14 +161,16 @@ class OfferController extends Controller
     /**
      * @Route("/offer/my", name="offers_my")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @param OfferService $offerService
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function myAction(OfferService $offerService)
+    public function myAction(Request $request)
     {
+        $pagination = $this->offerService
+            ->paginate($request->query->getInt('page', 1), $this->offerService->getMy($this->getUser()));
 
         return $this->render('offer/my.html.twig', [
-            'myOffers' => $offerService->getMy($this->getUser())
+            'pagination' => $pagination
         ]);
     }
 
@@ -115,13 +178,12 @@ class OfferController extends Controller
      * @Route("/offer/all", name="offers_all")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param Request $request
-     * @param OfferService $offerService
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function allAction(Request $request, OfferService $offerService)
+    public function allAction(Request $request)
     {
-        $pagination = $offerService
-            ->paginate($request->query->getInt('page', 1), $offerService->getAllOpen());
+        $pagination = $this->offerService
+            ->paginate($request->query->getInt('page', 1), $this->offerService->getAllOpen());
 
         return $this->render('offer/all.html.twig', [
             'pagination' => $pagination
@@ -132,23 +194,15 @@ class OfferController extends Controller
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Route("/offer/create", name="offer_create")
      * @param Request $request
-     * @param CategoryService $categoryService
-     * @param AnimalCategoryService $animalCategoryService
-     * @param UserService $userService
-     * @param OfferService $offerService
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function createAction(Request $request,
-                                 CategoryService $categoryService,
-                                 AnimalCategoryService $animalCategoryService,
-                                 UserService $userService,
-                                 OfferService $offerService)
+    public function createAction(Request $request)
     {
         $offer = new Offer();
         $animal = new Animal();
         [$categories, $animalCategories] = [
-            $categoryService->getAll(), $animalCategoryService->getAll()
+            $this->categoryService->getAll(), $this->animalTypeService->getAll()
         ];
 
         $form = $this->createForm(OfferType::class, $offer);
@@ -158,9 +212,7 @@ class OfferController extends Controller
 
         if ($animalForm->isSubmitted() && $form->isSubmitted()) {
 
-            $helperUser = $userService->getHelper();
-            $picture = $animalForm->getData()->getPicture();
-            $offerService->create($offer, $this->getUser(), $animal, $picture, $helperUser);
+            $this->offerService->create($offer, $this->getUser(), $animal, $animalForm->getData()->getPicture(), $this->userService->getHelper());
 
             return $this->redirectToRoute('homepage');
         }

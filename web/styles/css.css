@@ -1,3 +1,18 @@
-body {
-    background-color: #636363;
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+
+#main-body {
+    background-color: #AAAAAA;
+}
+
+.footer {
+    position: static;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
 }

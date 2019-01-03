@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+
+use AppBundle\Entity\Offer;
+
 /**
  * MessagesRepository
  *
@@ -10,4 +13,14 @@ namespace AppBundle\Repository;
  */
 class MessagesRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function groupForOfferByUsers(Offer $offer)
+    {
+
+        return $this->createQueryBuilder('m')
+            ->where('m.offer = :offer')
+            ->setParameter('offer', $offer)
+            ->groupBy('m.startUser')
+            ->getQuery()
+            ->getResult();
+    }
 }

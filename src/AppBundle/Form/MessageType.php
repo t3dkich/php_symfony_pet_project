@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,8 +17,12 @@ class MessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('content', TextType::class)
-            ->add('endUser')
-            ->add('startUser');
+            ->add('offer', EntityType::class, [
+                'class' => 'AppBundle\Entity\Message'
+            ])
+            ->add('startUser', EntityType::class, [
+                'class' => 'AppBundle\Entity\User'
+            ]);
     }
 
     /**

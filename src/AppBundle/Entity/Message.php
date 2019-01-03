@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,16 +29,16 @@ class Message
     private $content;
 
     /**
-     * @var User
+     * @var Offer
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="messages")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Offer", inversedBy="messages")
      */
-    private $endUser;
+    private $offer;
 
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="messages")
      */
     private $startUser;
 
@@ -80,25 +79,6 @@ class Message
     /**
      * @return User
      */
-    public function getEndUser()
-    {
-        return $this->endUser;
-    }
-
-    /**
-     * @param User $endUser
-     * @return Message
-     */
-    public function setEndUser($endUser)
-    {
-        $this->endUser = $endUser;
-
-        return $this;
-    }
-
-    /**
-     * @return User
-     */
     public function getStartUser()
     {
         return $this->startUser;
@@ -111,6 +91,25 @@ class Message
     public function setStartUser($startUser)
     {
         $this->startUser = $startUser;
+
+        return $this;
+    }
+
+    /**
+     * @return Offer
+     */
+    public function getOffer()
+    {
+        return $this->offer;
+    }
+
+    /**
+     * @param Offer $offer
+     * @return Message
+     */
+    public function setOffer(Offer $offer)
+    {
+        $this->offer = $offer;
 
         return $this;
     }

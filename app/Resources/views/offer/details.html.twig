@@ -1,0 +1,143 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {#{{ dump(offer) }}#}
+    <div class="row justify-content-center">
+        <img id="img" src="{{ asset('uploads/animal_images/' ~ offer.animal.picture) }}" class="image" alt="picture">
+        <div class="row justify-content-center">
+            <div class="card-body ">
+                <h5 class="card-title"><p><small style="background-color: #C9C9C9">Title </small></p>{{ offer.title }}</h5>
+                <hr>
+                <h5><p class="card-text"><p><small style="background-color: #C9C9C9">Category</small> </p>{{ offer.category.name }}</h5>
+                <hr>
+                <h5><p class="card-text"><p><small style="background-color: #C9C9C9">Animal Type</small> </p>{{ offer.animalType.name }}</h5>
+                <hr>
+                {#TODO oshte neshta ima tuka#}
+                <h5><p class="card-text"><p><small style="background-color: #C9C9C9">Name</small> </p>{{ offer.animal.name }}</h5>
+                <h5><p class="card-text"><p><small style="background-color: #C9C9C9">Breed</small> </p>{{ offer.animal.breed }}</h5>
+                <h5><p class="card-text"><p><small style="background-color: #C9C9C9">Age</small> </p>{{ offer.animal.age }}</h5>
+                <h5><p class="card-text"><p><small style="background-color: #C9C9C9">Description</small> </p>{{ offer.animal.description }}</h5>
+                <hr>
+                <p class="card-text">
+                    <small class="text-muted">Created on {{ offer.dateAdded|date }}</small>
+                </p>
+                {% if app.user == offer.user %}
+                    <div class="form-group">
+                        <form method="post" action="{{ path('sell_close', {'id': offer.id}) }}">
+                            <button type="submit">Sell/Close Offer</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="detailBox">
+        <div class="titleBox">
+            <label>Comment Box</label>
+            <button type="button" class="close" aria-hidden="true">&times;</button>
+        </div>
+        <div class="commentBox">
+
+            <p class="taskDescription">Tuk sa komentarite</p>
+        </div>
+        <div class="actionBox">
+            <ul class="commentList">
+                {% for message in messages %}
+                    <li>
+                        <div class="commenterImage">
+                            <img src="http://placekitten.com/50/50" />
+                        </div>
+                        <div class="commentText">
+                            <p class="">{{ message.content }}</p> <span class="date"><small>on March 5th, 2014</small></span>
+
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <form  method="post" action="{{ path('send_message', {'offerId': offer.id}) }}" class="form-inline" role="form">
+                <div class="form-group">
+                    <input class="form-control" name="message[content]" type="text" placeholder="Your comments" />
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-default">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <style>
+        .detailBox {
+            width:320px;
+            border:1px solid #bbb;
+            margin:50px;
+        }
+        .titleBox {
+            background-color:#fdfdfd;
+            padding:10px;
+        }
+        .titleBox label{
+            color:#444;
+            margin:0;
+            display:inline-block;
+        }
+
+        .commentBox {
+            padding:10px;
+            border-top:1px dotted #bbb;
+        }
+        .commentBox .form-group:first-child, .actionBox .form-group:first-child {
+            width:80%;
+        }
+        .commentBox .form-group:nth-child(2), .actionBox .form-group:nth-child(2) {
+            width:18%;
+        }
+        .actionBox .form-group * {
+            width:100%;
+        }
+        .taskDescription {
+            margin-top:10px 0;
+        }
+        .commentList {
+            padding:0;
+            list-style:none;
+            max-height:200px;
+            overflow:auto;
+        }
+        .commentList li {
+            margin:0;
+            margin-top:10px;
+        }
+        .commentList li > div {
+            display:table-cell;
+        }
+        .commenterImage {
+            width:30px;
+            margin-right:5px;
+            height:100%;
+            float:left;
+        }
+        .commenterImage img {
+            width:100%;
+            border-radius:50%;
+        }
+        .commentText p {
+            margin:0;
+        }
+        .sub-text {
+            color:#aaa;
+            font-family:verdana;
+            font-size:11px;
+        }
+        .actionBox {
+            border-top:1px dotted #bbb;
+            padding:10px;
+        }
+        #img {
+            width: 60rem;
+            height: 50rem;
+            padding-right: 5rem;
+        }
+    </style>
+{% endblock %}
