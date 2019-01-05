@@ -85,7 +85,7 @@ class Offer
     /**
      * @var float
      *
-     * @ORM\Column(name="price", type="decimal", nullable=true)
+     * @ORM\Column(name="price", type="decimal", scale=2, nullable=true)
      */
     private $price;
 
@@ -97,6 +97,35 @@ class Offer
     private $messages;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinTable(name="offer_bidders",
+     *     joinColumns={@ORM\JoinColumn(name="offer_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")})
+     */
+    private $bidders;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getBidders()
+    {
+        return $this->bidders;
+    }
+
+    /**
+     * @param User $bidder
+     * @return Offer
+     */
+    public function setBidders(User $bidder)
+    {
+        $this->bidders[] = $bidder;
+
+        return $this;
+    }
+
+    /**
      * Offer constructor.
      * @throws \Exception
      */
@@ -104,6 +133,7 @@ class Offer
     {
         $this->dateAdded = new \DateTime('now');
         $this->messages = new ArrayCollection();
+        $this->bidders = new ArrayCollection();
     }
 
     /**

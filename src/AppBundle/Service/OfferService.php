@@ -28,8 +28,43 @@ class OfferService implements OfferServiceInterface
         $this->container = $container;
     }
 
-    public function getMy(User $user)
+    public function getMy(User $user, $order)
     {
+        switch ($order) {
+            case 'all':
+                return $this->entityManager
+                    ->getRepository(Offer::class)
+                    ->findBy([
+                        'user' => $user
+                    ]);
+
+            case 'for_sale':
+                return $this->entityManager
+                    ->getRepository(Offer::class)
+                    ->findBy([
+                        'user' => $user,
+                        'state' => 'open'
+                    ]);
+
+            case 'sold':
+                return $this->entityManager
+                    ->getRepository(Offer::class)
+                    ->findBy([
+                        'user' => $user,
+                        'state' => 'sold'
+                    ]);
+
+            case 'cancelled':
+                return $this->entityManager
+                    ->getRepository(Offer::class)
+                    ->findBy([
+                        'user' => $user,
+                        'state' => 'cancelled'
+                    ]);
+                break;
+
+        }
+
         return $this->entityManager
             ->getRepository(Offer::class)
             ->findBy([
@@ -37,11 +72,37 @@ class OfferService implements OfferServiceInterface
             ]);
     }
 
-    public function getAllOpen()
+    public function getAllSortedBy($order)
     {
+        switch ($order) {
+            case 'date':
+                return $this->entityManager
+                    ->getRepository(Offer::class)
+                    ->findBy([
+                        'state' => 'open'
+                    ], [
+                        'dateAdded' => 'ASC'
+                    ]);
+            case 'popular':
+                $offers = $this->entityManager
+                    ->getRepository(Offer::class)
+                    ->findBy([
+                        'state' => 'open'
+                    ]);
+
+                usort($offers, function ($a, $b) {
+                    /** @var Offer $a
+                     * @var Offer $b
+                     */
+                    return count($b->getBidders()) <=> count($a->getBidders());
+                });
+
+                return $offers;
+
+        }
 
         return $this->entityManager->getRepository(Offer::class)->findBy([
-            'state' => 'open'
+            'state' => 'open',
         ]);
     }
 
@@ -94,11 +155,9 @@ class OfferService implements OfferServiceInterface
      * @param Animal $animal
      * @param Offer $existingOffer
      * @param Offer $offer
-     * @param User $helperUser
-     * @param User $currentUser
      * @throws \Exception
      */
-    public function edit(Animal $animal, Offer $existingOffer, Offer $offer, User $helperUser, User $currentUser)
+    public function edit(Animal $animal, Offer $existingOffer, Offer $offer)
     {
         if (!$animal->getPicture()) {
             $animal->setPicture($existingOffer->getAnimal()->getPicture());
@@ -118,11 +177,7 @@ class OfferService implements OfferServiceInterface
             ->setPrice($offer->getPrice())
             ->setCategory($offer->getCategory())
             ->setAnimalType($offer->getAnimalType())
-            ->setAnimal($animalEdited)
-            ->setDateAdded(new \DateTime('now'))
-            ->setUser($currentUser)
-            ->setEndPointUser($helperUser)
-            ->setState('open');
+            ->setAnimal($animalEdited);
 
         $catId = $existingOffer->getCategory()->getId();
 
@@ -138,7 +193,7 @@ class OfferService implements OfferServiceInterface
             $existingOffer->getAnimal()->setPicture($fileName);
         }
 
-        $this->entityManager->persist($existingOffer);
+        $this->entityManager->merge($existingOffer);
         $this->entityManager->flush();
     }
 

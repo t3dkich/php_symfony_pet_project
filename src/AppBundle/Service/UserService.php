@@ -9,6 +9,7 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -35,7 +36,14 @@ class UserService implements UserServiceInterface
     {
         $password = $this->container->get('security.password_encoder')
             ->encodePassword($user, $user->getPassword());
+
+        $role = $this->entityManager->getRepository(Role::class)
+            ->findBy([
+                'name' => 'ROLE_USER'
+            ]);
+
         $user->setPassword($password);
+        $user->addRoles($role[0]);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

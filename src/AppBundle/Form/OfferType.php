@@ -21,16 +21,12 @@ class OfferType extends AbstractType
             ->add('title', TextType::class)
             ->add('dateAdded', DateType::class)
             ->add('category', EntityType::class, [
-                'class' => 'AppBundle\Entity\Category'
+                'class' => 'AppBundle\Entity\Category',
+                'choice_label' => 'name'
             ])
             ->add('animalType', EntityType::class, [
-                'class' => 'AppBundle\Entity\AnimalCategory'
-            ])
-            ->add('user', EntityType::class, [
-                'class' => 'AppBundle\Entity\User'
-            ])
-            ->add('animal', EntityType::class, [
-                'class' => 'AppBundle\Entity\Animal'
+                'class' => 'AppBundle\Entity\AnimalCategory',
+                'choice_label' => 'name'
             ])
             ->add('price', MoneyType::class);
     }

@@ -15,12 +15,12 @@ use AppBundle\Entity\User;
 
 interface OfferServiceInterface
 {
-    public function getMy(User $user);
-    public function getAllOpen();
+    public function getMy(User $user, $order);
+    public function getAllSortedBy($argument);
     public function paginate($page, array $offers);
     public function create(Offer $offer, User $user, Animal $animal, $picture, User $helperUser);
     public function getById(int $id);
-    public function edit(Animal $animal, Offer $existingOffer, Offer $offer, User $helperUser, User $currentUser);
+    public function edit(Animal $animal, Offer $existingOffer, Offer $offer);
 
     public function sellToUser(User $user, Offer $offer);
     public function cancel(string $id);

@@ -40,7 +40,7 @@
     <div class="row justify-content-center mt-5">
         <div class="well col-md-4 mt-5">
             <h2 class="text-center mt-5 display-4">
-                Register Here
+                Login Here
             </h2>
             <form action="{{ path('security_login') }}" class="form-horizontal mt-5" method="post">
                 <div class="form-group">
@@ -57,10 +57,10 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <button type="submit" class="btn btn-primary">Register</button>
+                        <button type="submit" class="btn btn-primary">Login</button>
                     </div>
                     <div class="col-md-6 margin-2">
-                        <a id="lnk" class="nav-link offset-7" href="{{ path('security_login') }}">Login</a>
+                        <a id="lnk" class="nav-link offset-7" href="{{ path('user_register') }}">Register</a>
                     </div>
                 </div>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>

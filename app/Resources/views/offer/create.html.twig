@@ -1,4 +1,4 @@
-{% include 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
     <div class="container">
@@ -9,75 +9,59 @@
                     <h3 style="margin-bottom: 25px; text-align: center;">Contact Form</h3>
                     <div class="form-group col-md-8">
                         <label for="inputState">State</label>
-                        <label for="category">Category</label><select name="offer[category]" id="category" class="form-control" >
+                        <label for="category">Category</label><select name="offer[category]" id="category"
+                                                                      class="form-control">
                             {% for category in categories %}
-                            <option  value="{{ category.id }}">{{ category.name }}</option>
+                                <option value="{{ category.id }}">{{ category.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="form-group col-md-8">
                         <label for="inputState">State</label>
-                        <select name="offer[animalType]" id="inputState" class="form-control" >
+                        <select name="offer[animalType]" id="inputState" class="form-control">
                             {% for animalCategory in animalCategories %}
                                 <option value="{{ animalCategory.id }}">{{ animalCategory.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="price" name="offer[price]" placeholder="Price" >
+                        <input type="text" class="form-control" id="price" name="offer[price]" placeholder="Price">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="title" name="offer[title]" placeholder="Title" >
+                        <input type="text" class="form-control" id="title" name="offer[title]" placeholder="Title">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="animalName" name="animal[name]" placeholder="Animal Name" >
+                        <input hidden type="text" class="form-control" id="animalName" name="animal[name]"
+                               placeholder="Animal Name">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="animalBreed" name="animal[breed]" placeholder="Animal Breed"
-                               >
+                        <input type="text" class="form-control" id="animalBreed" name="animal[breed]"
+                               placeholder="Animal Breed"
+                        >
                     </div>
                     <div class="form-group">
-                        <input type="number" class="form-control" id="animalAge" name="animal[age]" placeholder="Animal Age"
-                               >
+                        <input type="number" class="form-control" id="animalAge" name="animal[age]"
+                               placeholder="Animal Age"
+                        >
                     </div>
                     <div class="form-group">
-                        <input type="file" accept=".jpg, .png" class="form-control" id="animalImage" placeholder="Animal Image"
+                        <input type="file" accept=".jpg, .png" class="form-control" id="animalImage"
+                               placeholder="Animal Image"
                                name="animal[picture]">
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control" name="animal[description]" id="description" placeholder="Message" maxlength="140"
+                        <textarea class="form-control" name="animal[description]" id="description" placeholder="Message"
+                                  maxlength="140"
                                   rows="7"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary pull-right">Submit Form
                     </button>
+                    {{ form_widget(animalForm.children._token)}}
+                    {{ form_widget(form.children._token)}}
                 </form>
             </div>
         </div>
     </div>
-{% endblock %}
-
-<script>
-    $("#category").on('change', () => {
-        let catVal = parseInt($('#category').val());
-        let nameInput = $('#animalName');
-        let priceInput = $('#price');
-        if (catVal === 4) {
-            nameInput.prop('hidden', true);
-            priceInput.prop('hidden', true);
-        } else if (catVal === 3) {
-            nameInput.prop('hidden', false);
-            priceInput.prop('hidden', true);
-        } else if (catVal === 1) {
-            nameInput.prop('hidden', true)
-
-        } else {
-            nameInput.prop('hidden', false);
-            priceInput.prop('hidden', false);
-        }
-    })
-</script>
-
-{% block extraCSS %}
     <style>
         .form-area {
             background-color: #FAFAFA;
@@ -86,5 +70,28 @@
             border: 1px solid GREY;
         }
     </style>
+{% endblock %}
+
+{% block someJS %}
+    <script>
+        $("#category").on('change', () => {
+            let catVal = parseInt($('#category').val());
+            let nameInput = $('#animalName');
+            let priceInput = $('#price');
+            if (catVal === 4) {
+                nameInput.prop('hidden', true);
+                priceInput.prop('hidden', true);
+            } else if (catVal === 3) {
+                nameInput.prop('hidden', false);
+                priceInput.prop('hidden', true);
+            } else if (catVal === 1) {
+                nameInput.prop('hidden', true)
+
+            } else {
+                nameInput.prop('hidden', false);
+                priceInput.prop('hidden', false);
+            }
+        })
+    </script>
 {% endblock %}
 

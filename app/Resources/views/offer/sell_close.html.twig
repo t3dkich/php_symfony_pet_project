@@ -29,6 +29,7 @@
         <div>
             <h3>Cancel this offer and don't sell to nobody
                 <button type="submit" class="btn">Close</button>
+
             </h3>
         </div>
     </form>
@@ -37,20 +38,31 @@
     <form method="post">
         <div>
             Sell To User: <label>
-                <input type="text" name="user[email]" placeholder="Enter User Email Address here">
+                <input type="text" id="emailInput" name="user[email]" placeholder="Enter User Email Address here">
             </label>
             <button type="submit" class="btn">Sell</button>
         </div>
     </form>
     <br/>
     <div>
-        {% if messages %}
-            <h4>Users messaged this offer</h4>
-            {% for message in messages %}
-                <span>{{ message.startUser.email }} || </span>
+        {% if bidders %}
+            <h4>Users bid on this offer</h4>
+            {% for bidder in bidders %}
+                <a href="#" class="takeit">{{ bidder.email }} </a>
             {% endfor %}
         {% else %}
-            <h4>Nobody messaged this offer</h4>
+            <h4>Nobody bid on this offer</h4>
         {% endif %}
     </div>
 {% endblock %}
+{% block someJS %}
+<script>
+    $('.takeit').on('click', (ev) => {
+        let email = $(ev.target).text().trim()
+        $('#emailInput').val(email);
+    })
+</script>
+{% endblock %}
+
+
+

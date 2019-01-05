@@ -45,9 +45,9 @@ class MessageController extends Controller
         $form = $this->createForm(MessageType::class, $message);
 
         $form->handleRequest($request);
+        $offer = $this->offerService->getById($offerId);
 
-        if ($form->isSubmitted()) {
-            $offer = $this->offerService->getById($offerId);
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $this->messageService->addMessage($message, $offer, $this->getUser());
 
@@ -58,7 +58,12 @@ class MessageController extends Controller
             ]);
         }
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('offer_details', [
+            'id' => $offerId,
+            'offer' => $offer,
+            'messages' => $this->messageService->findByOfferId($offerId),
+            'form' => $form->createView()
+        ]);
     }
 
 }

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Message
@@ -24,7 +25,8 @@ class Message
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="text")
+     * @ORM\Column(name="content", type="text", length=255)
+     * @Assert\NotBlank()
      */
     private $content;
 
@@ -41,6 +43,30 @@ class Message
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="messages")
      */
     private $startUser;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateAdded", type="date", nullable=false)
+     */
+    private $dateAdded;
+
+    /**
+     * Offer constructor.
+     * @throws \Exception
+     */
+    public function __construct()
+    {
+        $this->dateAdded = new \DateTime('now');
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateAdded()
+    {
+        return $this->dateAdded;
+    }
 
     /**
      * Get id
