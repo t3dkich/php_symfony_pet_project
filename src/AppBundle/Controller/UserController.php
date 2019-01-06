@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Offer;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
+use AppBundle\Entity\UserDetails;
+use AppBundle\Form\UserDetailsType;
 use AppBundle\Form\UserType;
 use AppBundle\Service\AnimalTypeServiceInterface;
 use AppBundle\Service\CategoryServiceInterface;
@@ -14,6 +16,7 @@ use AppBundle\Service\UserService;
 use AppBundle\Service\UserServiceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -46,6 +49,44 @@ class UserController extends Controller
         $this->animalTypeService = $animalTypeService;
         $this->categoryService = $categoryService;
         $this->messageService = $messageService;
+    }
+
+    /**
+     * @Route("/user/{id}/detail", name="user_details")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function userDetailsAction(Request $request)
+    {
+
+        return $this->render('user/details.html.twig', [
+            'user' => $this->getUser()
+        ]);
+
+    }
+
+    /**
+     * @Route("/user/{id}/details_edit", name="user_details_edit")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function userDetailsEditAction(Request $request)
+    {
+        $userDetails = new UserDetails();
+        $form = $this->createForm(UserDetailsType::class, $userDetails);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $userDetails->setUser($this->getUser());
+            $this->userService->details($userDetails);
+
+            return $this->redirectToRoute('user_details');
+        }
+
+        return $this->render('user/details_edit.html.twig', [
+            'form' => $form->createView(),
+            'user' => $this->getUser()
+        ]);
     }
 
     /**
@@ -113,5 +154,4 @@ class UserController extends Controller
             'form' => $form->createView()
         ]);
     }
-
 }

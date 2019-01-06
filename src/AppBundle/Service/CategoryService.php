@@ -12,18 +12,23 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * @property EntityManagerInterface entityManager
+ */
 class CategoryService implements CategoryServiceInterface
 {
     /**
-     * @var EntityManagerInterface
+     * CategoryService constructor.
+     * @param EntityManagerInterface $entityManager
      */
-    private $entityManager;
-
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @return \AppBundle\Entity\Category[]|array
+     */
     public function getAll()
     {
 

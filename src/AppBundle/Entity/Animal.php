@@ -53,7 +53,7 @@ class Animal
     /**
      * @var string
      *
-     * @ORM\Column(name="picture", type="string", length=255, nullable=false)
+     * @ORM\Column(name="picture", type="string", length=255, nullable=true)
      */
     private $picture;
 

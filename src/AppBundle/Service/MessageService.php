@@ -15,24 +15,27 @@ use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * @property EntityManagerInterface entityManager
+ * @property ContainerInterface container
+ */
 class MessageService implements MessageServiceInterface
 {
     /**
-     * @var EntityManagerInterface
+     * MessageService constructor.
+     * @param EntityManagerInterface $entityManager
+     * @param ContainerInterface $container
      */
-    private $entityManager;
-
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
     public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
     {
         $this->entityManager = $entityManager;
         $this->container = $container;
     }
 
+    /**
+     * @param $offerId
+     * @return Message[]|Offer[]|\AppBundle\Entity\Role[]|User[]|array
+     */
     public function findByOfferId($offerId)
     {
 
@@ -43,6 +46,11 @@ class MessageService implements MessageServiceInterface
             ]);
     }
 
+    /**
+     * @param Message $message
+     * @param Offer $offer
+     * @param User $getUser
+     */
     public function addMessage(Message $message, Offer $offer, User $getUser)
     {
         $message
@@ -53,6 +61,10 @@ class MessageService implements MessageServiceInterface
         $this->entityManager->flush();
     }
 
+    /**
+     * @param Offer $offer
+     * @return array
+     */
     public function getGroupedMessages(Offer $offer)
     {
 

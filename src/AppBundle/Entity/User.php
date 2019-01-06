@@ -69,6 +69,13 @@ class User implements UserInterface
      */
     private $roles;
 
+    /**
+     * @var UserDetails
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\UserDetails", mappedBy="user")
+     */
+    private $details;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
@@ -262,6 +269,25 @@ class User implements UserInterface
     public function setMessages($messages)
     {
         $this->messages = $messages;
+    }
+
+    /**
+     * @return UserDetails|null
+     */
+    public function getDetails()
+    {
+        return $this->details;
+    }
+
+    /**
+     * @param UserDetails $details
+     * @return User
+     */
+    public function setDetails(UserDetails $details)
+    {
+        $this->details = $details;
+
+        return $this;
     }
 
 }

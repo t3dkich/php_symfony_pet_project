@@ -4,64 +4,68 @@
     <div class="container body-content">
         <div class="row">
             <table>
+                {% if pagination.items|length == 0 %}
+                    <h3>You have not offers in this category.</h3>
+                {% else %}
                 {# @var offer \AppBundle\Entity\Offer#}
                 {% for offer in pagination %}
-                    <tr {% if loop.index is odd %}class="color"{% endif %}>
-                        <div class="card mr-5 mb-5" style="width: 18rem;">
-                            {% if offer.animal.picture %}
-                                <img class="card-img-top" height="200px"
-                                     src="{{ asset('uploads/animal_images/' ~ offer.animal.picture) }}"
-                                     alt="Card image cap">
-                            {% else %}
-                                <img class="card-img-top" height="200px"
-                                     src="{{ asset('uploads/NOIMAGE.jpg') }}"
-                                     alt="Card image cap">
-                            {% endif %}
-                            <div class="card-body">
-                                <small>Title</small>
-                                <h5 class="card-title">{{ offer.title }}</h5>
-                                <hr>
-                                <small>Description</small>
-                                <p class="card-text">{{ offer.animal.description }}</p>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <small>Animal Type:</small> {{ offer.animalType.name }}
-                                </li>
-                                <li class="list-group-item">
-                                    <small>Category:</small> {{ offer.category.name }}
-                                </li>
-                                {% if offer.animal.name %}
+                        <tr {% if loop.index is odd %}class="color"{% endif %}>
+                            <div class="card mr-5 mb-5" style="width: 18rem;">
+                                {% if offer.animal.picture %}
+                                    <img class="card-img-top" height="200px"
+                                         src="{{ asset('uploads/animal_images/' ~ offer.animal.picture) }}"
+                                         alt="Card image cap">
+                                {% else %}
+                                    <img class="card-img-top" height="200px"
+                                         src="{{ asset('uploads/NOIMAGE.jpg') }}"
+                                         alt="Card image cap">
+                                {% endif %}
+                                <div class="card-body">
+                                    <small>Title</small>
+                                    <h5 class="card-title">{{ offer.title }}</h5>
+                                    <hr>
+                                    <small>Description</small>
+                                    <p class="card-text">{{ offer.animal.description }}</p>
+                                </div>
+                                <ul class="list-group list-group-flush">
                                     <li class="list-group-item">
-                                        <small>Animal Name:</small>{{ offer.animal.name }}
+                                        <small>Animal Type:</small> {{ offer.animalType.name }}
                                     </li>
-                                {% endif %}
-                                {% if offer.price %}
                                     <li class="list-group-item">
-                                        <small>Price:</small>{{ offer.price }}
-                                        <small> lv</small>
+                                        <small>Category:</small> {{ offer.category.name }}
                                     </li>
-                                {% endif %}
-                            </ul>
-                            <div class="card-body">
-                                {% if app.user == offer.user %}
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <a class="btn btn-primary pull-right"
-                                               href="{{ path('offer_details', {'id' : offer.id}) }}">Read more
-                                                &raquo;</a>
+                                    {% if offer.animal.name %}
+                                        <li class="list-group-item">
+                                            <small>Animal Name:</small>{{ offer.animal.name }}
+                                        </li>
+                                    {% endif %}
+                                    {% if offer.price %}
+                                        <li class="list-group-item">
+                                            <small>Price:</small>{{ offer.price }}
+                                            <small> lv</small>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                                <div class="card-body">
+                                    {% if app.user == offer.user %}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <a class="btn btn-primary pull-right"
+                                                   href="{{ path('offer_details', {'id' : offer.id}) }}">Read more
+                                                    &raquo;</a>
+                                            </div>
+                                            <div class="col-md-6 margin-2">
+                                                <a class="btn btn-primary ml-5"
+                                                   href="{{ path('offer_edit', {'id' : offer.id}) }}">Edit &raquo;</a>
+                                            </div>
                                         </div>
-                                        <div class="col-md-6 margin-2">
-                                            <a class="btn btn-primary ml-5"
-                                               href="{{ path('offer_edit', {'id' : offer.id}) }}">Edit &raquo;</a>
-                                        </div>
-                                    </div>
-                                {% endif %}
+                                    {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <br/>
-                    </tr>
+                            <br/>
+                        </tr>
                 {% endfor %}
+                {% endif %}
             </table>
             {# display navigation #}
             <div class="navigation">

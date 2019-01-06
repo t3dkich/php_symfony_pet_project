@@ -10,6 +10,7 @@ namespace AppBundle\Service;
 
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\UserDetails;
 
 interface UserServiceInterface
 {
@@ -17,4 +18,6 @@ interface UserServiceInterface
     public function checkIfExists(User $user);
     public function getHelper();
     public function getByEmail(string $email);
+
+    public function details(UserDetails $userDetails);
 }

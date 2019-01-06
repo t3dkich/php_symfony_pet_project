@@ -12,18 +12,23 @@ namespace AppBundle\Service;
 use AppBundle\Entity\AnimalCategory;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * @property EntityManagerInterface entityManager
+ */
 class AnimalTypeService implements AnimalTypeServiceInterface
 {
     /**
-     * @var EntityManagerInterface
+     * AnimalTypeService constructor.
+     * @param EntityManagerInterface $entityManager
      */
-    private $entityManager;
-
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @return AnimalCategory[]|\AppBundle\Entity\Category[]|array
+     */
     public function getAll()
     {
 

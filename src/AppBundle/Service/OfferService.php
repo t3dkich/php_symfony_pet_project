@@ -10,24 +10,29 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * @property EntityManagerInterface entityManager
+ * @property ContainerInterface container
+ */
 class OfferService implements OfferServiceInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
 
     /**
-     * @var ContainerInterface
+     * OfferService constructor.
+     * @param EntityManagerInterface $entityManager
+     * @param ContainerInterface $container
      */
-    private $container;
-
     public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
     {
         $this->entityManager = $entityManager;
         $this->container = $container;
     }
 
+    /**
+     * @param User $user
+     * @param $order
+     * @return Offer[]|\AppBundle\Entity\Role[]|User[]|array
+     */
     public function getMy(User $user, $order)
     {
         switch ($order) {
@@ -72,6 +77,10 @@ class OfferService implements OfferServiceInterface
             ]);
     }
 
+    /**
+     * @param $order
+     * @return Offer[]|\AppBundle\Entity\Role[]|User[]|array
+     */
     public function getAllSortedBy($order)
     {
         switch ($order) {
@@ -91,7 +100,8 @@ class OfferService implements OfferServiceInterface
                     ]);
 
                 usort($offers, function ($a, $b) {
-                    /** @var Offer $a
+                    /**
+                     * @var Offer $a
                      * @var Offer $b
                      */
                     return count($b->getBidders()) <=> count($a->getBidders());
@@ -106,6 +116,11 @@ class OfferService implements OfferServiceInterface
         ]);
     }
 
+    /**
+     * @param $page
+     * @param array $offers
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
     public function paginate($page, array $offers)
     {
         $paginator = $this->container->get('knp_paginator');
@@ -146,6 +161,10 @@ class OfferService implements OfferServiceInterface
         $this->entityManager->flush();
     }
 
+    /**
+     * @param int $id
+     * @return Offer|object|null
+     */
     public function getById(int $id)
     {
         return $this->entityManager->getRepository(Offer::class)->find($id);
@@ -197,6 +216,10 @@ class OfferService implements OfferServiceInterface
         $this->entityManager->flush();
     }
 
+    /**
+     * @param User $user
+     * @param Offer $offer
+     */
     public function sellToUser($user, $offer)
     {
         $offer->setEndPointUser($user)
@@ -206,6 +229,9 @@ class OfferService implements OfferServiceInterface
         $this->entityManager->flush();
     }
 
+    /**
+     * @param string $id
+     */
     public function cancel(string $id)
     {
         $offer = $this->entityManager->getRepository(Offer::class)->find($id);

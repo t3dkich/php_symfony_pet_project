@@ -11,27 +11,31 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
+use AppBundle\Entity\UserDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * @property EntityManagerInterface entityManager
+ * @property ContainerInterface container
+ */
 class UserService implements UserServiceInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
 
     /**
-     * @var ContainerInterface
+     * UserService constructor.
+     * @param EntityManagerInterface $entityManager
+     * @param ContainerInterface $container
      */
-    private $container;
-
     public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
     {
         $this->entityManager = $entityManager;
         $this->container = $container;
     }
 
+    /**
+     * @param User $user
+     */
     public function register(User $user)
     {
         $password = $this->container->get('security.password_encoder')
@@ -49,6 +53,10 @@ class UserService implements UserServiceInterface
         $this->entityManager->flush();
     }
 
+    /**
+     * @param User $user
+     * @return bool|null
+     */
     public function checkIfExists(User $user)
     {
         return $this->entityManager
@@ -56,6 +64,9 @@ class UserService implements UserServiceInterface
             ->findBy(['email' => $user->getEmail()]) === [] ? null : true;
     }
 
+    /**
+     * @return User|object|null
+     */
     public function getHelper()
     {
         return $this->entityManager
@@ -63,11 +74,29 @@ class UserService implements UserServiceInterface
             ->find(-1);
     }
 
+    /**
+     * @param string $email
+     * @return User|object|null
+     */
     public function getByEmail(string $email)
     {
 
         return $this->entityManager
             ->getRepository(User::class)
             ->findOneBy(['email' => $email]);
+    }
+
+    public function details(UserDetails $userDetails)
+    {
+        $details = $this->entityManager->getRepository(UserDetails::class)
+            ->findOneBy(['user' => $userDetails->getUser()]);
+
+        if ($details) {
+            $this->entityManager->persist($userDetails);
+            $this->entityManager->flush();
+        } else {
+            $this->entityManager->merge($userDetails);
+            $this->entityManager->flush();
+        }
     }
 }

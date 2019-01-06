@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Message;
-use AppBundle\Entity\Offer;
 use AppBundle\Form\MessageType;
 use AppBundle\Service\MessageServiceInterface;
 use AppBundle\Service\OfferServiceInterface;
@@ -38,6 +37,7 @@ class MessageController extends Controller
      * @param Request $request
      * @param $offerId
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function sendMessage(Request $request, $offerId)
     {
