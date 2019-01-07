@@ -76,16 +76,33 @@ class UserController extends Controller
         $form = $this->createForm(UserDetailsType::class, $userDetails);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
+
+            $validator = $this->get('validator');
+            $errors = $validator->validate($userDetails);
+
+            if (count($errors) > 0) {
+                return $this->render('user/details_edit.html.twig', [
+                    'form' => $form->createView(),
+                    'user' => $this->getUser(),
+                    'errors' => $errors
+                ]);
+            }
+
             $userDetails->setUser($this->getUser());
             $this->userService->details($userDetails);
 
-            return $this->redirectToRoute('user_details');
+            $this->addFlash('info', 'You have successfully edited your profile.');
+
+            return $this->redirectToRoute('user_details', [
+                'id' => $this->getUser()->getId()
+            ]);
         }
 
         return $this->render('user/details_edit.html.twig', [
             'form' => $form->createView(),
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
+            'errors' => []
         ]);
     }
 

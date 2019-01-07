@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * UserDetails
@@ -23,7 +24,12 @@ class UserDetails
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="Must have last name")
+     * @Assert\Regex(
+     *     pattern="/[a-zA-Z]{1,25}/",
+     *     match=true,
+     *     message="Your name must have between 1 and 25 english letters only"
+     * )
      * @ORM\Column(name="last_name", type="string", length=25)
      */
     private $lastName;
@@ -31,12 +37,25 @@ class UserDetails
     /**
      * @var string
      *
+     * @Assert\NotBlank(message="Must have town")
+     * @Assert\Regex(
+     *     pattern="/[a-zA-Z]{2,50}/",
+     *     match=true,
+     *     message="Your name must have between 2 and 50 english letters only"
+     * )
      * @ORM\Column(name="town", type="string", length=50)
      */
     private $town;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank(message="Must have street address")
+     * @Assert\Regex(
+     *     pattern="/[a-zA-Z0-9]{5,75}/",
+     *     match=true,
+     *     message="Your name must have between 5 and 75 english letters and numbers"
+     * )
      *
      * @ORM\Column(name="street_address", type="string", length=75)
      */
@@ -45,12 +64,27 @@ class UserDetails
     /**
      * @var int
      *
+     * @Assert\NotBlank(message="Must have street address")
+     * @Assert\Range(
+     *      min = 18,
+     *      max = 150,
+     *      minMessage = "You must be at least {{ limit }} years old to enter",
+     *      maxMessage = "You cannot be more than {{ limit }} years old to enter"
+     * )
+     *
      * @ORM\Column(name="age", type="smallint")
      */
     private $age;
 
     /**
      * @var string
+     *  @Assert\NotBlank(message="Must have user details")
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 999,
+     *      minMessage = "Your details must be at least {{ limit }} characters long",
+     *      maxMessage = "Your details cannot be longer than {{ limit }} characters"
+     * )
      *
      * @ORM\Column(name="details", type="text")
      */
@@ -91,6 +125,19 @@ class UserDetails
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**

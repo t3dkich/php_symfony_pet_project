@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Offer
@@ -25,12 +26,25 @@ class Offer
     /**
      * @var string
      *
+     * @Assert\NotBlank(message="Offer must have title")
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 25,
+     *      minMessage = "Your title must be at least {{ limit }} characters long",
+     *      maxMessage = "Your title cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Regex(
+     *     pattern="/[a-zA-Z]+/",
+     *     match=true,
+     *     message="Title must have only english alphabetical"
+     * )
+     *
      * @ORM\Column(name="title", type="string", length=25, nullable=false)
      */
     private $title;
 
     /**
-     *
+     * @Assert\NotBlank(message="Offer must have category")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="offers")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      *
@@ -46,7 +60,7 @@ class Offer
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="Offer must have animal type")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AnimalCategory", inversedBy="offers")
      * @ORM\JoinColumn(name="animal_category_id", referencedColumnName="id")
      *
@@ -78,14 +92,15 @@ class Offer
     /**
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="end_point_user", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="end_point_user", referencedColumnName="id")
      */
     private $endPointUser;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="price", type="decimal", scale=2, nullable=true)
+     *
+     * @ORM\Column(name="price", type="decimal", scale=2)
      */
     private $price;
 

@@ -4,6 +4,18 @@
     <div class="container">
         <div class="col-md-5">
             <div class="form-area">
+                {% for offErr in offerErr %}
+                    <div class="alert alert-warning">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        {{ offErr.message }}
+                    </div>
+                {% endfor %}
+                {% for aniErr in animalErr %}
+                    <div class="alert alert-warning">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        {{ aniErr.message }}
+                    </div>
+                {% endfor %}
                 <form id="form" role="form" method="post" enctype="multipart/form-data">
                     {#<br style="clear:both">#}
                     <h3 style="margin-bottom: 25px; text-align: center;">Contact Form</h3>
@@ -71,6 +83,8 @@
                     </div>
                     <button type="submit" class="btn btn-primary pull-right">Edit
                     </button>
+                    {{ form_widget(animalForm.children._token)}}
+                    {{ form_widget(form.children._token)}}
                 </form>
             </div>
         </div>

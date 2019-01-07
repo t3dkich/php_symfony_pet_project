@@ -2,6 +2,12 @@
 
 {% block body %}
     {# @var \AppBundle\Entity\User user#}
+    {% for error in errors %}
+        <div class="alert alert-warning">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+            {{ error.message }}
+        </div>
+    {% endfor %}
     <div class="row justify-content-center mt-5">
         <div class="well col-md-4 mt-5">
             <h2 class="text-center mt-5 display-4">
@@ -35,8 +41,8 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4 control-label" >Details</label>
-                    <textarea type="text" class="form-control text-center" name="user_details[details]"
-                              placeholder="User Details">{% if user.details is not null %} {{ user.details.details }} {% endif %}"</textarea>
+                    <textarea class="form-control text-center" name="user_details[details]"
+                              placeholder="User Details">{% if user.details is not null %} {{ user.details.details }} {% endif %}</textarea>
                 </div>
 
                 {{ form_widget(form.children._token)}}

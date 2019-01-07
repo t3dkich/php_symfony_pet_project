@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% for msg in app.session.flashbag.get('info') %}
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+            {{ msg }}
+        </div>
+    {% endfor %}
     {# @var \AppBundle\Entity\User user #}
     <div id="card" class="card border-success row justify-content-center mt-5" style="max-width: 60%;">
         <div class="card-header bg-transparent border-success">User Details</div>

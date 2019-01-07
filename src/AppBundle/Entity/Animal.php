@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Animal
@@ -24,6 +25,7 @@ class Animal
 
     /**
      * @var string
+     * @Assert\Blank()
      *
      * @ORM\Column(name="name", type="string", length=15, nullable=true)
      */
@@ -31,28 +33,28 @@ class Animal
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="breed", type="string", length=25)
+     * @Assert\Blank()
+     * @ORM\Column(name="breed", type="string", length=25, nullable=true)
      */
     private $breed;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
+     * @Assert\NotBlank(message="Animal must have description")
+     * @ORM\Column(name="description", type="text", nullable=false)
      */
     private $description;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="age", type="integer", nullable=true)
+     * @Assert\NotBlank(message="Animal must have age even if its 0")
+     * @ORM\Column(name="age", type="integer", nullable=false)
      */
     private $age;
 
     /**
      * @var string
-     *
+     * @Assert\Blank()
      * @ORM\Column(name="picture", type="string", length=255, nullable=true)
      */
     private $picture;

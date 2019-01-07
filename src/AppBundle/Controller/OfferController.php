@@ -149,7 +149,6 @@ class OfferController extends Controller
         ];
 
         if (!$existingOffer) {
-
             return $this->render('default/index.html.twig');
         }
 
@@ -160,6 +159,23 @@ class OfferController extends Controller
 
         if ($animalForm->isSubmitted() && $form->isSubmitted()) {
 
+            $validator = $this->get('validator');
+            $animalErrors = $validator->validate($animal);
+            $offerErrors = $validator->validate($offer);
+
+            if (count($animalErrors) > 0 || count($offerErrors) > 0) {
+
+                return $this->render('offer/edit.html.twig', [
+                    'offer' => $existingOffer,
+                    'categories' => $categories,
+                    'animalCategories' => $animalCategories,
+                    'animalForm' => $animalForm->createView(),
+                    'form' => $form->createView(),
+                    'animalErr' => $animalErrors,
+                    'offerErr' => $offerErrors
+                ]);
+            }
+
             $this->offerService->edit($animal, $existingOffer, $offer);
 
             return $this->redirectToRoute('homepage');
@@ -169,7 +185,11 @@ class OfferController extends Controller
         return $this->render('offer/edit.html.twig', [
             'offer' => $existingOffer,
             'categories' => $categories,
-            'animalCategories' => $animalCategories
+            'animalCategories' => $animalCategories,
+            'animalForm' => $animalForm->createView(),
+            'form' => $form->createView(),
+            'animalErr' => [],
+            'offerErr' => []
         ]);
     }
 
@@ -227,19 +247,40 @@ class OfferController extends Controller
         $form->handleRequest($request);
         $animalForm->handleRequest($request);
 
-        if ($animalForm->isSubmitted() && $animalForm->isValid()
-            && $form->isSubmitted() && $form->isValid()) {
+        if ($animalForm->isSubmitted() && $form->isSubmitted()) {
+
+            $validator = $this->get('validator');
+            $animalErrors = $validator->validate($animal);
+            $offerErrors = $validator->validate($offer);
+
+            if (count($animalErrors) > 0 || count($offerErrors) > 0) {
+
+                return $this->render('offer/create.html.twig', [
+                    'categories' => $categories,
+                    'animalCategories' => $animalCategories,
+                    'form' => $form->createView(),
+                    'animalForm' => $animalForm->createView(),
+                    'animalErr' => $animalErrors,
+                    'offerErr' => $offerErrors
+                ]);
+            }
 
             $this->offerService->create($offer, $this->getUser(), $animal, $animalForm->getData()->getPicture(), $this->userService->getHelper());
 
-            return $this->redirectToRoute('homepage');
+            $this->addFlash('info', 'You have successfully created new offer.');
+
+            return $this->redirectToRoute('offers_my', [
+                'order' => 'all'
+            ]);
         }
 
         return $this->render('offer/create.html.twig', [
             'categories' => $categories,
             'animalCategories' => $animalCategories,
             'form' => $form->createView(),
-            'animalForm' => $animalForm->createView()
+            'animalForm' => $animalForm->createView(),
+            'offerErr' => [],
+            'animalErr' => []
         ]);
     }
 }
