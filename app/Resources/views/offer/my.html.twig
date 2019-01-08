@@ -13,20 +13,16 @@
                 {% if pagination.items|length == 0 %}
                     <h3>You have not offers in this category.</h3>
                 {% else %}
-                {# @var offer \AppBundle\Entity\Offer#}
-                {% for offer in pagination %}
+                    {# @var \AppBundle\Entity\Offer offer #}
+                    {% for offer in pagination %}
                         <tr {% if loop.index is odd %}class="color"{% endif %}>
                             <div class="card mr-5 mb-5" style="width: 18rem;">
-                                {% if offer.animal.picture %}
-                                    <img class="card-img-top" height="200px"
-                                         src="{{ asset('uploads/animal_images/' ~ offer.animal.picture) }}"
-                                         alt="Card image cap">
-                                {% else %}
-                                    <img class="card-img-top" height="200px"
-                                         src="{{ asset('uploads/NOIMAGE.jpg') }}"
-                                         alt="Card image cap">
-                                {% endif %}
+                                <img class="card-img-top" height="200px"
+                                     src="{{ asset('uploads/animal_images/' ~ offer.animal.picture) }}"
+                                     alt="Card image cap">
                                 <div class="card-body">
+                                    <small>Bidders count</small>
+                                    <h5 class="card-title">{{ offer.bidders|length }}</h5>
                                     <small>Title</small>
                                     <h5 class="card-title">{{ offer.title }}</h5>
                                     <hr>
@@ -70,7 +66,7 @@
                             </div>
                             <br/>
                         </tr>
-                {% endfor %}
+                    {% endfor %}
                 {% endif %}
             </table>
             {# display navigation #}

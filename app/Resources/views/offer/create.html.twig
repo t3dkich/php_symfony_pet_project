@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {# @var \AppBundle\Entity\Offer offer #}
+    {# @var \AppBundle\Entity\Animal animal #}
     <div class="container">
-        <div class="col-md-5">
-            <div class="form-area">
+        <div class="row justify-content-center mt-3">
+            <div class="form-area" style="width: 50%">
                 {% for offErr in offerErr %}
                     <div class="alert alert-warning">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
@@ -18,43 +20,47 @@
                 {% endfor %}
                 <form role="form" method="post" enctype="multipart/form-data">
                     <br style="clear:both">
-                    <h3 style="margin-bottom: 25px; text-align: center;">Contact Form</h3>
+                    <h3 style="margin-bottom: 25px; text-align: center;">Create offer</h3>
                     <div class="form-group col-md-8">
-                        <label for="inputState">State</label>
-                        <label for="category">Category</label><select name="offer[category]" id="category"
-                                                                      class="form-control">
+                        <label for="category">Category</label>
+                        <select name="offer[category]" id="category" class="form-control">
                             {% for category in categories %}
-                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                <option {% if offer %} {% if offer.category.id == category.id %} selected {% endif %} {% endif %}
+                                        value="{{ category.id }}">{{ category.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="form-group col-md-8">
-                        <label for="inputState">State</label>
+                        <label for="inputState">Animal type</label>
                         <select name="offer[animalType]" id="inputState" class="form-control">
                             {% for animalCategory in animalCategories %}
-                                <option value="{{ animalCategory.id }}">{{ animalCategory.name }}</option>
+                                <option {% if offer %} {% if offer.animalType.id == animalCategory.id %} selected {% endif %} {% endif %}
+                                        value="{{ animalCategory.id }}">{{ animalCategory.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="title" name="offer[title]" placeholder="Title">
+                        <input type="text" class="form-control" id="title" name="offer[title]" placeholder="Title"
+                                {% if offer %} value="{{ offer.title }}" {% endif %}>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="price" name="offer[price]" placeholder="Price">
+                        <input type="text" class="form-control" id="price" name="offer[price]" placeholder="Price"
+                                {% if offer %} value="{{ offer.price }}" {% endif %}>
                     </div>
                     <div class="form-group">
                         <input hidden type="text" class="form-control" id="animalName" name="animal[name]"
-                               placeholder="Animal Name">
+                               placeholder="Animal Name"
+                                {% if animal %} value="{{ animal.name }}" {% endif %}>
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" id="animalBreed" name="animal[breed]"
                                placeholder="Animal Breed"
-                        >
+                                {% if animal %} value="{{ animal.breed }}" {% endif %}>
                     </div>
                     <div class="form-group">
                         <input type="number" class="form-control" id="animalAge" name="animal[age]"
                                placeholder="Animal Age"
-                        >
+                                {% if animal %} value="{{ animal.age }}" {% endif %}>
                     </div>
                     <div class="form-group">
                         <input type="file" accept=".jpg, .png" class="form-control" id="animalImage"
@@ -62,14 +68,21 @@
                                name="animal[picture]">
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control" name="animal[description]" id="description" placeholder="Animal Description"
+                        <textarea class="form-control" name="animal[description]" id="description"
+                                  placeholder="Animal Description"
                                   maxlength="140"
-                                  rows="7"></textarea>
+                                  rows="7">{% if animal %} {{ animal.description }} {% endif %}</textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary pull-right">Submit Form
+                    <button id="requestBtn" type="submit" class="btn btn-primary pull-right">Submit Form
                     </button>
-                    {{ form_widget(animalForm.children._token)}}
-                    {{ form_widget(form.children._token)}}
+                    <script>
+                        let btn = $('#requestBtn')
+                        btn.on('click', () => {
+                            btn.prop('hidden', true)
+                        })
+                    </script>
+                    {{ form_widget(animalForm.children._token) }}
+                    {{ form_widget(form.children._token) }}
                 </form>
             </div>
         </div>
@@ -98,7 +111,7 @@
                 priceInput.prop('hidden', true);
             } else if (catVal === 1) {
                 nameInput.prop('hidden', true)
-
+                priceInput.prop('hidden', false)
             } else {
                 nameInput.prop('hidden', false);
                 priceInput.prop('hidden', false);

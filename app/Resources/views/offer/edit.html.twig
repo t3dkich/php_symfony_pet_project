@@ -81,8 +81,14 @@
                                   maxlength="140"
                                   rows="7">{{ offer.animal.description }}</textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary pull-right">Edit
+                    <button id="requestBtn" type="submit" class="btn btn-primary pull-right">Edit
                     </button>
+                    <script>
+                        let btn = $('#requestBtn')
+                        btn.on('click', () => {
+                            btn.prop('hidden', true)
+                        })
+                    </script>
                     {{ form_widget(animalForm.children._token)}}
                     {{ form_widget(form.children._token)}}
                 </form>

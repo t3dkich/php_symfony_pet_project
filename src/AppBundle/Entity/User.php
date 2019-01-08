@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -26,6 +28,12 @@ class User implements UserInterface
     /**
      * @var string
      *
+     * @Assert\NotBlank(message="Email cannot be blank")
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
+     *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
@@ -33,12 +41,21 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="First name cannot be blank")
+     * @Assert\Regex(
+     *     pattern="/[a-zA-Z]{2,20}/",
+     *     match=true,
+     *     message="Your first name must be between 2 and 20 english letters long"
+     * )
+     *
+     * @ORM\Column(name="name", type="string", length=20, unique=true)
      */
     private $name;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank(message="Password and confirm password must match")
      *
      * @ORM\Column(name="password", type="string", length=64)
      */
@@ -219,7 +236,6 @@ class User implements UserInterface
 
         return $this;
     }
-
 
 
     /**

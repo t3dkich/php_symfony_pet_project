@@ -100,7 +100,7 @@ class Offer
      * @var float
      *
      *
-     * @ORM\Column(name="price", type="decimal", scale=2)
+     * @ORM\Column(name="price", type="decimal", scale=2, nullable=true)
      */
     private $price;
 

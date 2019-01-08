@@ -54,7 +54,7 @@ class UserDetails
      * @Assert\Regex(
      *     pattern="/[a-zA-Z0-9]{5,75}/",
      *     match=true,
-     *     message="Your name must have between 5 and 75 english letters and numbers"
+     *     message="Your street address must have between 5 and 75 english letters and numbers"
      * )
      *
      * @ORM\Column(name="street_address", type="string", length=75)
@@ -64,7 +64,7 @@ class UserDetails
     /**
      * @var int
      *
-     * @Assert\NotBlank(message="Must have street address")
+     * @Assert\NotBlank(message="Must have age")
      * @Assert\Range(
      *      min = 18,
      *      max = 150,

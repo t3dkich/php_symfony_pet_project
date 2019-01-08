@@ -2,7 +2,7 @@
 
 {% block body %}
 
-    {#{{ dump(offer) }}#}
+    {# @var \AppBundle\Entity\Offer offer#}
     <div class="row justify-content-center">
         {% if offer.animal.picture %}
             <img class="card-img-top img" height="200px"
@@ -74,18 +74,33 @@
                         {{ msg }}
                     </div>
                 {% endfor %}
-                <div>
-                    <form method="post" action="{{ path('user_bid_offer', {'offerId': offer.id}) }}">
-                        <label>
-                            Request to buy here:
-                            <button type="submit" class="btn btn-success">Request to buy</button>
-                        </label>
-                    </form>
-                </div>
+                {% if app.user != offer.user %}
+                    <div>
+                        <form method="post" action="{{ path('user_bid_offer', {'offerId': offer.id}) }}">
+                            <label>
+                                Request to buy here:
+                                <button id="requestBtn" type="submit" class="btn btn-success">Request to buy</button>
+                            </label>
+                        </form>
+                    </div>
+                {% endif %}
+                <script>
+                    let btn = $('#requestBtn')
+                    btn.on('click', () => {
+                        btn.prop('hidden', true)
+                    })
+                </script>
             </div>
         </div>
     </div>
+
     <div class="detailBox">
+        {% for error in errors %}
+            <div class="alert alert-warning">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                {{ error.message }}
+            </div>
+        {% endfor %}
         <div class="titleBox">
             <label>Comment Box</label>
             <button type="button" class="close" aria-hidden="true">&times;</button>
@@ -96,7 +111,7 @@
         </div>
         <div class="actionBox">
             <ul class="commentList">
-                {% for message in messages %}
+                {% for message in messages|reverse %}
                     <li>
                         <div>
                             <small>{{ message.startUser.email }} --> </small>

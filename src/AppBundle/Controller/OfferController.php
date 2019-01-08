@@ -126,7 +126,8 @@ class OfferController extends Controller
         return $this->render('offer/details.html.twig', [
             'offer' => $this->offerService->getById($id),
             'messages' => $this->messageService->findByOfferId($id),
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'errors' => []
         ]);
     }
 
@@ -164,16 +165,17 @@ class OfferController extends Controller
             $offerErrors = $validator->validate($offer);
 
             if (count($animalErrors) > 0 || count($offerErrors) > 0) {
-
-                return $this->render('offer/edit.html.twig', [
-                    'offer' => $existingOffer,
-                    'categories' => $categories,
-                    'animalCategories' => $animalCategories,
-                    'animalForm' => $animalForm->createView(),
-                    'form' => $form->createView(),
-                    'animalErr' => $animalErrors,
-                    'offerErr' => $offerErrors
-                ]);
+                if (count($animalErrors) > 1 && $animalErrors[0]->getPropertyPath() !== 'picture') {
+                    return $this->render('offer/edit.html.twig', [
+                        'offer' => $existingOffer,
+                        'categories' => $categories,
+                        'animalCategories' => $animalCategories,
+                        'animalForm' => $animalForm->createView(),
+                        'form' => $form->createView(),
+                        'animalErr' => $animalErrors,
+                        'offerErr' => $offerErrors
+                    ]);
+                }
             }
 
             $this->offerService->edit($animal, $existingOffer, $offer);
@@ -203,7 +205,7 @@ class OfferController extends Controller
     public function myAction(Request $request, $order)
     {
         $pagination = $this->offerService
-            ->paginate($request->query->getInt('page', 1), $this->offerService->getMy($this->getUser(), $order));
+            ->paginate($request->query->getInt('page', 1), $this->offerService->getMuSortedBy($this->getUser(), $order));
 
         return $this->render('offer/my.html.twig', [
             'pagination' => $pagination
@@ -261,7 +263,9 @@ class OfferController extends Controller
                     'form' => $form->createView(),
                     'animalForm' => $animalForm->createView(),
                     'animalErr' => $animalErrors,
-                    'offerErr' => $offerErrors
+                    'offerErr' => $offerErrors,
+                    'animal' => $animal,
+                    'offer' => $offer
                 ]);
             }
 
@@ -280,7 +284,9 @@ class OfferController extends Controller
             'form' => $form->createView(),
             'animalForm' => $animalForm->createView(),
             'offerErr' => [],
-            'animalErr' => []
+            'animalErr' => [],
+            'animal' => null,
+            'offer' => null
         ]);
     }
 }

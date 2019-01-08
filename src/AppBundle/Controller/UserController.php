@@ -15,6 +15,7 @@ use AppBundle\Service\OfferServiceInterface;
 use AppBundle\Service\UserService;
 use AppBundle\Service\UserServiceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,20 +54,28 @@ class UserController extends Controller
 
     /**
      * @Route("/user/{id}/detail", name="user_details")
-     * @param Request $request
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     *
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function userDetailsAction(Request $request)
+    public function userDetailsAction($id)
     {
+        $id = (int) $id;
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles()) && $this->getUser()->getId() !== $id) {
+
+            return $this->redirectToRoute('homepage');
+        }
 
         return $this->render('user/details.html.twig', [
-            'user' => $this->getUser()
+            'user' => $this->userService->getById($id)
         ]);
 
     }
 
     /**
      * @Route("/user/{id}/details_edit", name="user_details_edit")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -82,9 +91,11 @@ class UserController extends Controller
             $errors = $validator->validate($userDetails);
 
             if (count($errors) > 0) {
+
                 return $this->render('user/details_edit.html.twig', [
                     'form' => $form->createView(),
                     'user' => $this->getUser(),
+                    'formUserDetails' => $userDetails,
                     'errors' => $errors
                 ]);
             }
@@ -102,12 +113,14 @@ class UserController extends Controller
         return $this->render('user/details_edit.html.twig', [
             'form' => $form->createView(),
             'user' => $this->getUser(),
+            'formUserDetails' => null,
             'errors' => []
         ]);
     }
 
     /**
      * @Route("/user/bid/{offerId}", name="user_bid_offer")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param $offerId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -152,7 +165,18 @@ class UserController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
+
+            $validator = $this->get('validator');
+            $errors = $validator->validate($user);
+
+            if (count($errors) > 0) {
+                return $this->render('user/register.html.twig', [
+                    'form' => $form->createView(),
+                    'errors' => $errors,
+                    'user' => $user
+                ]);
+            }
 
             if (null !== $userService->checkIfExists($user)) {
 
@@ -168,7 +192,9 @@ class UserController extends Controller
         }
 
         return $this->render('user/register.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'errors' => [],
+            'user' => null
         ]);
     }
 }

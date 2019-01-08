@@ -25,8 +25,16 @@ class Message
     /**
      * @var string
      *
+     * @Assert\NotBlank(message="Message cannot be blank")
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 255,
+     *     minMessage = "Your message must be at least {{ limit }} chars long",
+     *     maxMessage = "Your message must be max of {{ limit }} chars long"
+     * )
+     *
      * @ORM\Column(name="content", type="text", length=255)
-     * @Assert\NotBlank()
+     *
      */
     private $content;
 

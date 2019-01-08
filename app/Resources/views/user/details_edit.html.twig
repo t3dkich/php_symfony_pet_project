@@ -2,6 +2,7 @@
 
 {% block body %}
     {# @var \AppBundle\Entity\User user#}
+    {# @var \AppBundle\Entity\UserDetails formUserDetails#}
     {% for error in errors %}
         <div class="alert alert-warning">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
@@ -19,37 +20,48 @@
                     <input type="text" class="form-control text-center" name="user_details[lastName]"
                            aria-describedby="emailHelp"
                            placeholder="Enter Last Name"
-                    {% if user.details is not null %} value="{{ user.details.lastName }} {% endif %}">
+                    {% if user.details is not null %} value="{{ user.details.lastName }}" {% endif %}
+                    {% if formUserDetails is not null %} value="{{ formUserDetails.lastName }}" {% endif %}>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4 control-label" >Town</label>
                     <input type="text" class="form-control text-center" name="user_details[town]" id="user[name]"
                            placeholder="Enter your living town"
-                            {% if user.details is not null %} value="{{ user.details.Town }} {% endif %}">
+                            {% if user.details is not null %} value="{{ user.details.town }}" {% endif %}
+                            {% if formUserDetails is not null %} value="{{ formUserDetails.town }}" {% endif %}>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4 control-label" >Street Address</label>
                     <input type="text" class="form-control text-center" name="user_details[streetAddress]"
                            placeholder="Enter your street address"
-                            {% if user.details is not null %} value="{{ user.details.streetAddress }} {% endif %}">
+                            {% if user.details is not null %} value="{{ user.details.streetAddress }} " {% endif %}
+                            {% if formUserDetails is not null %} value="{{ formUserDetails.streetAddress }}" {% endif %}>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4 control-label" >Age</label>
                     <input type="number" class="form-control text-center" name="user_details[age]"
                            placeholder="Enter your age"
-                            {% if user.details is not null %} value="{{ user.details.age }}" {% endif %}>
+                            {% if user.details is not null %} value="{{ user.details.age }}" {% endif %}
+                            {% if formUserDetails is not null %} value="{{ formUserDetails.age }}" {% endif %}>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4 control-label" >Details</label>
                     <textarea class="form-control text-center" name="user_details[details]"
-                              placeholder="User Details">{% if user.details is not null %} {{ user.details.details }} {% endif %}</textarea>
+                              placeholder="User Details">{% if user.details is not null %} {{ user.details.details }} {% endif %}
+                        {% if formUserDetails is not null and user.details is null %} {{ formUserDetails.details }} {% endif %}</textarea>
                 </div>
 
                 {{ form_widget(form.children._token)}}
                 <div class="row">
                     <div class="col-md-6">
-                        <button type="submit" class="btn btn-primary">Edit Profile</button>
+                        <button id="requestBtn" type="submit" class="btn btn-primary">Edit Profile</button>
                     </div>
+                    <script>
+                        let btn = $('#requestBtn')
+                        btn.on('click', () => {
+                            btn.prop('hidden', true)
+                        })
+                    </script>
                     <div class="col-md-6 margin-2">
                         <a id="lnk" class="nav-link offset-7" href="{{ path('homepage') }}">Cancel</a>
                     </div>

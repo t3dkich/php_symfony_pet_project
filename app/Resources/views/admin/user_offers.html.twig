@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% if pagination|length > 0 %}
     <div class="container body-content">
 
         <div class="row">
@@ -9,16 +10,23 @@
                 {% for offer in pagination %}
                     <tr {% if loop.index is odd %}class="color"{% endif %}>
                         <div class="card mr-5 mb-5" style="width: 18rem;">
-                            {% if offer.animal.picture %}
-                                <img class="card-img-top" height="200px"
-                                     src="{{ asset('uploads/animal_images/' ~ offer.animal.picture) }}"
-                                     alt="Card image cap">
-                            {% else %}
-                                <img class="card-img-top" height="200px"
-                                     src="{{ asset('uploads/NOIMAGE.jpg') }}"
-                                     alt="Card image cap">
-                            {% endif %}
+
+                            <img class="card-img-top" height="200px"
+                                 src="{{ asset('uploads/animal_images/' ~ offer.animal.picture) }}"
+                                 alt="Card image cap">
+
                             <div class="card-body">
+                                <small>State</small>
+                                <h5 class="card-title"
+                                        {% if offer.state == 'open' %} style="color: forestgreen" {% endif %}
+                                        {% if offer.state == 'cancelled' %} style="color: red" {% endif %}
+                                        {% if offer.state == 'sold' %} style="color: blue" {% endif %}>{{ offer.state }}</h5>
+                                <hr>
+                                {% if offer.state == 'sold' %}
+                                    <small>Sold to user</small>
+                                    <h5 class="card-title" style="color: blue">{{ offer.endPointUser.email }}</h5>
+                                    <hr>
+                                {% endif %}
                                 <small>Title</small>
                                 <h5 class="card-title">{{ offer.title }}</h5>
                                 <hr>
@@ -56,13 +64,18 @@
                                         <a class="btn btn-primary pull-right"
                                            href="{{ path('offer_details', {'id' : offer.id}) }}">Read more &raquo;</a>
                                     </div>
-                                    {% if app.user == offer.user %}
-
+                                    {% if offer.state == 'open' %}
                                         <div class="col-md-6 margin-2">
-                                            <a class="btn btn-primary ml-5"
-                                               href="{{ path('offer_edit', {'id' : offer.id}) }}">Edit &raquo;</a>
+                                            <a class="btn btn-danger"
+                                               href="{{ path('admin_cancel_offer', {'offerId' : offer.id, 'userId': offer.user.id}) }}">Cancel offer
+                                                &raquo;</a>
                                         </div>
-
+                                    {% elseif offer.state == 'cancelled' %}
+                                        <div class="col-md-6 margin-2">
+                                            <a class="btn btn-success"
+                                               href="{{ path('admin_reopen_offer', {'offerId' : offer.id, 'userId': offer.user.id}) }}">Open for sale
+                                                &raquo;</a>
+                                        </div>
                                     {% endif %}
                                 </div>
                             </div>
@@ -77,9 +90,7 @@
             </div>
         </div>
     </div>
+    {% else %}
+        <h1 class="text-center">{{ user.email }} has no offer of any kind</h1>
+    {% endif %}
 {% endblock %}
-
-{% block extraCSS %}
-
-{% endblock %}
-

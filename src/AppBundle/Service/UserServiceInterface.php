@@ -20,4 +20,6 @@ interface UserServiceInterface
     public function getByEmail(string $email);
 
     public function details(UserDetails $userDetails);
+    public function getAll();
+    public function getById($id);
 }

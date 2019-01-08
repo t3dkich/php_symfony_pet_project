@@ -99,4 +99,20 @@ class UserService implements UserServiceInterface
             $this->entityManager->flush();
         }
     }
+
+    public function getAll()
+    {
+
+        return $this->entityManager
+            ->getRepository(User::class)
+            ->findAll();
+    }
+
+    public function getById($id)
+    {
+
+        return $this->entityManager
+            ->getRepository(User::class)
+            ->find($id) ?? null;
+    }
 }

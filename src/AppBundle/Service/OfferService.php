@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 
 use AppBundle\Entity\Animal;
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Offer;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,7 +17,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class OfferService implements OfferServiceInterface
 {
-
     /**
      * OfferService constructor.
      * @param EntityManagerInterface $entityManager
@@ -33,7 +33,7 @@ class OfferService implements OfferServiceInterface
      * @param $order
      * @return Offer[]|\AppBundle\Entity\Role[]|User[]|array
      */
-    public function getMy(User $user, $order)
+    public function getMuSortedBy(User $user, $order)
     {
         switch ($order) {
             case 'all':
@@ -231,13 +231,59 @@ class OfferService implements OfferServiceInterface
 
     /**
      * @param string $id
+     * @param int|null $endPointUserId
      */
-    public function cancel(string $id)
+    public function cancel(string $id, int $endPointUserId = null)
     {
-        $offer = $this->entityManager->getRepository(Offer::class)->find($id);
+        $offer = $this->entityManager
+            ->getRepository(Offer::class)
+            ->find($id);
+
         $offer->setState('cancelled');
+        if (null !== $endPointUserId) {
+            $offer->setEndPointUser(
+                    $this->entityManager
+                        ->getRepository(User::class)
+                        ->find($endPointUserId));
+
+        }
+
         $this->entityManager->merge($offer);
         $this->entityManager->flush();
 
+    }
+
+    public function getOneOfEachType()
+    {
+        $categories = $this->entityManager->getRepository(Category::class)->findAll();
+        $offers = [];
+        foreach ($categories as $cat) {
+            $offers[] = $this->findOnByCategory($cat);
+        }
+
+        return $offers;
+    }
+
+    private function findOnByCategory($cat)
+    {
+        return $this->entityManager->getRepository(Offer::class)
+            ->findOneBy(['category' => $cat],
+                ['dateAdded' => 'ASC']);
+    }
+
+    public function reOpen(string $id)
+    {
+        $offer = $this->entityManager
+            ->getRepository(Offer::class)
+            ->find($id);
+        $offer->setState('open');
+
+        $offer->setEndPointUser(
+            $this->entityManager
+                ->getRepository(User::class)
+                ->find(-1));
+
+        $this->entityManager->merge($offer);
+        $this->entityManager->flush();
     }
 }

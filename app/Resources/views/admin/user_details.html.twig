@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {# @var \AppBundle\Entity\User user #}
+    <div id="card" class="card border-success row justify-content-center mt-5" style="max-width: 60%;">
+        <div class="card-header bg-transparent border-success">User Details</div>
+        <div class="card-body text">
+            <h5 class="card-title text-center">E-mail</h5>
+            <p class="card-text text-center">{{ user.email }}</p>
+            <hr>
+            <h5 class="card-title text-center">First Name</h5>
+            <p class="card-text text-center">{{ user.name }}</p>
+            <hr>
+            {% if user.details is not null%}
+                <h5 class="card-title text-center">Last Name</h5>
+                <p class="card-text text-center">{{ user.details.lastName }}</p>
+                <hr>
+                <h5 class="card-title text-center">Town</h5>
+                <p class="card-text text-center">{{ user.details.town }}</p>
+                <hr>
+                <h5 class="card-title text-center">Street Address</h5>
+                <p class="card-text text-center">{{ user.details.streetAddress }}</p>
+                <hr>
+                <h5 class="card-title text-center">Age</h5>
+                <p class="card-text text-center">{{ user.details.age }}</p>
+                <hr>
+                <h5 class="card-title text-center">Description</h5>
+                <p class="card-text text-center">{{ user.details.details }}</p>
+                {% else %}
+                <div class="text-center">
+                    <h2>{{ user.email }} has no details</h2>
+                </div>
+            {% endif %}
+            <a href="{{ path('admin_panel') }}">Go to admin panel</a>
+        </div>
+    </div>
+    <style>
+        #card {
+            margin-left: 20%;
+        }
+    </style>
+{% endblock %}

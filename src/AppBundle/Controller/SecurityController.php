@@ -21,4 +21,12 @@ class SecurityController extends Controller
             'error' => $error
         ]);
     }
+
+    /**
+     * @Route("/logout", name="security_logout")
+     * @throws \Exception
+     */
+    public function logout(){
+        throw new \Exception("Logout failed!");
+    }
 }

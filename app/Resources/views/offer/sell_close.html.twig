@@ -28,7 +28,7 @@
     <form method="post" action="{{ path('offer_cancel', {'id': offer.id}) }}">
         <div>
             <h3>Cancel this offer and don't sell to nobody
-                <button type="submit" class="btn">Close</button>
+                <button type="submit" class="btn-lg btn-danger">Close</button>
 
             </h3>
         </div>
@@ -40,15 +40,17 @@
             Sell To User: <label>
                 <input type="text" id="emailInput" name="user[email]" placeholder="Enter User Email Address here">
             </label>
-            <button type="submit" class="btn">Sell</button>
+            <button {% if offer.bidders|length == 0 %} disabled {% endif %} type="submit" class="btn">Sell</button>
         </div>
     </form>
     <br/>
     <div>
         {% if bidders %}
-            <h4>Users bid on this offer</h4>
+            <h4>Users bid on this offer:</h4>
             {% for bidder in bidders %}
                 <a href="#" class="takeit">{{ bidder.email }} </a>
+            {% else %}
+                <h3 style="color: blue">Nobody bid on your offer, so you cannot sell this offer for now</h3>
             {% endfor %}
         {% else %}
             <h4>Nobody bid on this offer</h4>
@@ -56,12 +58,12 @@
     </div>
 {% endblock %}
 {% block someJS %}
-<script>
-    $('.takeit').on('click', (ev) => {
-        let email = $(ev.target).text().trim()
-        $('#emailInput').val(email);
-    })
-</script>
+    <script>
+        $('.takeit').on('click', (ev) => {
+            let email = $(ev.target).text().trim()
+            $('#emailInput').val(email);
+        })
+    </script>
 {% endblock %}
 
 

@@ -47,23 +47,30 @@ class MessageController extends Controller
         $form->handleRequest($request);
         $offer = $this->offerService->getById($offerId);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $validator = $this->get('validator');
+        $errors = $validator->validate($message);
 
-            $this->messageService->addMessage($message, $offer, $this->getUser());
+        if (count($errors) > 0) {
 
-            return $this->redirectToRoute('offer_details', [
+            return $this->render('offer/details.html.twig', [
                 'id' => $offerId,
                 'offer' => $offer,
-                'messages' => $this->messageService->findByOfferId($offerId)
+                'messages' => $this->messageService->findByOfferId($offerId),
+                'form' => $form->createView(),
+                'errors' => $errors
             ]);
         }
+
+        $this->messageService->addMessage($message, $offer, $this->getUser());
 
         return $this->redirectToRoute('offer_details', [
             'id' => $offerId,
             'offer' => $offer,
             'messages' => $this->messageService->findByOfferId($offerId),
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'errors' => []
         ]);
+
     }
 
 }

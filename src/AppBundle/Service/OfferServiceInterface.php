@@ -15,7 +15,7 @@ use AppBundle\Entity\User;
 
 interface OfferServiceInterface
 {
-    public function getMy(User $user, $order);
+    public function getMuSortedBy(User $user, $order);
     public function getAllSortedBy($argument);
     public function paginate($page, array $offers);
     public function create(Offer $offer, User $user, Animal $animal, $picture, User $helperUser);
@@ -23,5 +23,7 @@ interface OfferServiceInterface
     public function edit(Animal $animal, Offer $existingOffer, Offer $offer);
 
     public function sellToUser(User $user, Offer $offer);
-    public function cancel(string $id);
+    public function cancel(string $id, int $endPointUserId = null);
+    public function getOneOfEachType();
+    public function reOpen(string $id);
 }
