@@ -13,6 +13,7 @@ security:
 
   # http://symfony.com/doc/current/book/security.html#firewalls-authentication
   firewalls:
+
     secured_area:
       # this firewall applies to all URLs
       pattern: ^/
@@ -39,7 +40,11 @@ security:
         # The name of the route to redirect to after logging out
         target: homepage
 
+      # Redirects to homepage after access denied response
+      access_denied_url: 'homepage'
+
   access_control:
   # this is a catch-all for the admin area
   # additional security lives in the controllers
 #        - { path: '^/(%locale%)/admin', roles: ROLE_ADMIN }
+#        - { path: '^/admin', roles: ROLE_ADMIN }

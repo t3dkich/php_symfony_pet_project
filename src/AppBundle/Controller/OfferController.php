@@ -52,6 +52,7 @@ class OfferController extends Controller
 
     /**
      * @Route("/offer/cancel/{id}", name="offer_cancel")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -214,7 +215,7 @@ class OfferController extends Controller
 
     /**
      * @Route("/offer/all/{order}", name="offers_all")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     *
      * @param Request $request
      * @param $order
      * @return \Symfony\Component\HttpFoundation\Response
