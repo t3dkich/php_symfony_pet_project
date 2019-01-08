@@ -2,7 +2,15 @@
 
 {% block body %}
     <div class="text-center pt-5 pb-5">
-        <h2>Wellcome to admin panel and here are all the users. You can click on them for details and offers</h2>
+        <h2>Welcome to admin panel and here are all the users. You can click on them for details and offers</h2>
+    </div>
+    <div>
+        <div class="row justify-content-center input-group text-center">
+            <label class="row justify-content-center">
+                <span>Search for user email here</span>
+                <input id="search_bar" type="text" class="form-control" aria-label="Text input with radio button">
+            </label>
+        </div>
     </div>
     <table class="table table-hover">
         <thead>
@@ -19,16 +27,37 @@
         {# @var \AppBundle\Entity\User user#}
         {% for key , user in allUsers|sort %}
             {% if user.email != 'helper' %}
-            <tr>
-                <th scope="row">{{ user.id }}</th>
-                <td>{{ user.email }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.offers|length }}</td>
-                <td><a href="{{ path('admin_user_details', {'id': user.id}) }}" class="btn btn-success" type="submit">Details</a></td>
-                <td><a href="{{ path('admin_all_user_offers', {'userId': user.id}) }}" class="btn btn-success" type="submit">Offers</a></td>
-            </tr>
+                <tr class="tr_to_catch" id="{{ key }}">
+                    <th scope="row">{{ user.id }}</th>
+                    <td class="target_email">{{ user.email }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.offers|length }}</td>
+                    <td><a href="{{ path('admin_user_details', {'id': user.id}) }}" class="btn btn-success"
+                           type="submit">Details</a></td>
+                    <td><a href="{{ path('admin_all_user_offers', {'userId': user.id}) }}" class="btn btn-success"
+                           type="submit">Offers</a></td>
+                </tr>
             {% endif %}
         {% endfor %}
         </tbody>
     </table>
+    <script>
+        let target = $('.target_email')
+        let searchBar = $('#search_bar')
+
+        searchBar.on('keyup', (ev) => {
+            let currentText = '^' + $(ev.target).val()
+
+            for (element of target) {
+                let email = $(element).text()
+                let pattern = new RegExp(currentText)
+                let match = email.match(pattern);
+                if (!match) {
+                    $(element).parent().prop('hidden', true)
+                } else {
+                    $(element).parent().prop('hidden', false)
+                }
+            }
+        })
+    </script>
 {% endblock %}
