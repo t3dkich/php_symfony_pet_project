@@ -60,7 +60,12 @@ class Animal
     /**
      * @var string
      *
-     * @Assert\NotNull(message="Animal must have picture")
+     * @Assert\File(
+     *     maxSize = "1024k",
+     *     mimeTypes = {"image/jpeg", "image/png"},
+     *     mimeTypesMessage = "Please upload a valid {{ types }} format",
+     *     maxSizeMessage="Please upload a file of max 1024k"
+     * )
      *
      * @ORM\Column(name="picture", type="string", length=255, nullable=false)
      */

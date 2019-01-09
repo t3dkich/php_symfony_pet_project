@@ -18,7 +18,7 @@ interface OfferServiceInterface
     public function getMuSortedBy(User $user, $order);
     public function getAllSortedBy($argument);
     public function paginate($page, array $offers);
-    public function create(Offer $offer, User $user, Animal $animal, $picture, User $helperUser);
+    public function create(Offer $offer, User $user, Animal $animal, User $helperUser);
     public function getById(int $id);
     public function edit(Animal $animal, Offer $existingOffer, Offer $offer);
 

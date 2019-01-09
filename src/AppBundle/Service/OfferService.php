@@ -137,11 +137,10 @@ class OfferService implements OfferServiceInterface
      * @param Offer $offer
      * @param User $user
      * @param Animal $animal
-     * @param $picture
      * @param User $helperUser
      * @throws \Exception
      */
-    public function create(Offer $offer, User $user, Animal $animal, $picture, User $helperUser)
+    public function create(Offer $offer, User $user, Animal $animal, User $helperUser)
     {
         $offer
             ->setAnimal($animal)
@@ -151,11 +150,10 @@ class OfferService implements OfferServiceInterface
             ->setState('open');
 
         /** @var UploadedFile $picture */
-        if ($picture) {
+            $picture = $animal->getPicture();
             $fileName = md5(uniqid()) . '.' . $picture->guessExtension();
             $picture->move($this->container->getParameter('image_directory'), $fileName);
             $offer->getAnimal()->setPicture($fileName);
-        }
 
         $this->entityManager->persist($offer);
         $this->entityManager->flush();

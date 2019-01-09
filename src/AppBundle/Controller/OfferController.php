@@ -60,7 +60,9 @@ class OfferController extends Controller
     {
         $this->offerService->cancel($id);
 
-        return $this->redirectToRoute('offers_all');
+        return $this->redirectToRoute('offers_my', [
+            'order' => 'cancelled'
+        ]);
     }
 
     /**
@@ -70,7 +72,7 @@ class OfferController extends Controller
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sellCloseAction(Request $request, $id)
+    public function sellAction(Request $request, $id)
     {
         /** @var Offer $offer */
         $offer = $this->offerService->getById($id);
@@ -103,7 +105,9 @@ class OfferController extends Controller
 
             }
 
-            return $this->redirectToRoute('offers_all');
+            return $this->redirectToRoute('offers_my', [
+                'order' => 'sold'
+            ]);
         }
 
         return $this->render('offer/sell_close.html.twig', [
@@ -181,7 +185,9 @@ class OfferController extends Controller
 
             $this->offerService->edit($animal, $existingOffer, $offer);
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('offers_my', [
+                'order' => 'all'
+            ]);
 
         }
 
@@ -270,7 +276,7 @@ class OfferController extends Controller
                 ]);
             }
 
-            $this->offerService->create($offer, $this->getUser(), $animal, $animalForm->getData()->getPicture(), $this->userService->getHelper());
+            $this->offerService->create($offer, $this->getUser(), $animal, $this->userService->getHelper());
 
             $this->addFlash('info', 'You have successfully created new offer.');
 

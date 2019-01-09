@@ -99,6 +99,10 @@ class Offer
     /**
      * @var float
      *
+     * @Assert\Type(
+     *     type="float",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      *
      * @ORM\Column(name="price", type="decimal", scale=2, nullable=true)
      */
