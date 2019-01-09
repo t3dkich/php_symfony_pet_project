@@ -90,7 +90,7 @@ class OfferService implements OfferServiceInterface
                     ->findBy([
                         'state' => 'open'
                     ], [
-                        'dateAdded' => 'ASC'
+                        'dateAdded' => 'DESC'
                     ]);
             case 'popular':
                 $offers = $this->entityManager
@@ -266,7 +266,7 @@ class OfferService implements OfferServiceInterface
     {
         return $this->entityManager->getRepository(Offer::class)
             ->findOneBy(['category' => $cat],
-                ['dateAdded' => 'ASC']);
+                ['dateAdded' => 'DESC']);
     }
 
     public function reOpen(string $id)
