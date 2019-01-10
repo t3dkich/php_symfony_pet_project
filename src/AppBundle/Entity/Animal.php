@@ -60,6 +60,7 @@ class Animal
     /**
      * @var string
      *
+     * @Assert\NotBlank(message="must have pic")
      * @Assert\File(
      *     maxSize = "1024k",
      *     mimeTypes = {"image/jpeg", "image/png"},

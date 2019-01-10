@@ -48,7 +48,7 @@ class User implements UserInterface
      *     message="Your first name must be between 2 and 20 english letters long"
      * )
      *
-     * @ORM\Column(name="name", type="string", length=20, unique=true)
+     * @ORM\Column(name="name", type="string", length=20, unique=false)
      */
     private $name;
 

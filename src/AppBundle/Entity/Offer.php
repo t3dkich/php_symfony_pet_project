@@ -90,7 +90,6 @@ class Offer
     private $state;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="end_point_user", referencedColumnName="id")
      */

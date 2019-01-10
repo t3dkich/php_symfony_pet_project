@@ -183,7 +183,11 @@ class UserController extends Controller
                 $this->addFlash('info',
                     "Username with email " . $user->getEmail() . " already taken!");
 
-                return $this->render('user/register.html.twig', ['form' => $form->createView()]);
+                return $this->render('user/register.html.twig', [
+                    'form' => $form->createView(),
+                    'errors' => $errors,
+                    'user' => $user
+                ]);
             }
 
             $userService->register($user);
