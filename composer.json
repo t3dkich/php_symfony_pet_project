@@ -32,11 +32,12 @@
         "symfony/polyfill-apcu": "^1.0",
         "symfony/swiftmailer-bundle": "^2.6.4",
         "symfony/symfony": "3.4.*",
-        "twig/twig": "^1.0||^2.0"
-    },
-    "require-dev": {
+        "twig/twig": "^1.0||^2.0",
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0"
+    },
+    "require-dev": {
+
     },
     "scripts": {
         "symfony-scripts": [
@@ -48,10 +49,10 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ],
         "post-install-cmd": [
-
+            "@symfony-scripts"
         ],
         "post-update-cmd": [
-
+            "@symfony-scripts"
         ]
     },
     "config": {
