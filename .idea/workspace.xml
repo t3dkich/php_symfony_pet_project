@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="44861c81-a865-445e-b070-45f88819ec18" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Procfile" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -371,12 +371,12 @@
       <workItem from="1547137936966" duration="758000" />
       <workItem from="1547157535887" duration="10000" />
       <workItem from="1547158075581" duration="568000" />
-      <workItem from="1547166000417" duration="631000" />
+      <workItem from="1547166000417" duration="1099000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="261995000" />
+    <option name="totallyTimeSpent" value="262463000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -388,10 +388,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="368" y="-10" width="1339" height="999" extended-state="1" />
-    <editor active="true" />
+    <frame x="368" y="-10" width="1339" height="999" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2713057" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2713057" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -404,7 +403,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" weight="0.3295099" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32794458" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32794458" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="Database Console" order="12" weight="0.32846716" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
