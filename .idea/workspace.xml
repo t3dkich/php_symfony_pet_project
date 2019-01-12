@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="44861c81-a865-445e-b070-45f88819ec18" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Entity/UserDetails.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/UserDetails.php" afterDir="false" />
-    </list>
+    <list default="true" id="44861c81-a865-445e-b070-45f88819ec18" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -452,12 +449,12 @@
       <workItem from="1547166000417" duration="8246000" />
       <workItem from="1547210037396" duration="788000" />
       <workItem from="1547248889520" duration="4967000" />
-      <workItem from="1547303771880" duration="4718000" />
+      <workItem from="1547303771880" duration="5027000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="280083000" />
+    <option name="totallyTimeSpent" value="280392000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">

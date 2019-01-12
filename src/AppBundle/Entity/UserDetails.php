@@ -93,7 +93,7 @@ class UserDetails
     /**
      * @var User
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User", mappedBy="details")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="details")
      */
     private $user;
 
