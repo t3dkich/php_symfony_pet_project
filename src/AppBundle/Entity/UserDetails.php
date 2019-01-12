@@ -94,6 +94,7 @@ class UserDetails
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="details")
+     * @ORM\Column(name="user_id", type="integer", nullable=false)
      */
     private $user;
 
