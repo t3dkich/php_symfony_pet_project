@@ -14,23 +14,27 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\UserDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @property EntityManagerInterface entityManager
  * @property ContainerInterface container
+ * @property Security security
  */
 class UserService implements UserServiceInterface
 {
 
     /**
      * UserService constructor.
+     * @param Security $security
      * @param EntityManagerInterface $entityManager
      * @param ContainerInterface $container
      */
-    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
+    public function __construct(Security $security ,EntityManagerInterface $entityManager, ContainerInterface $container)
     {
         $this->entityManager = $entityManager;
         $this->container = $container;
+        $this->security = $security;
     }
 
     /**
@@ -89,7 +93,8 @@ class UserService implements UserServiceInterface
     public function details(UserDetails $userDetails)
     {
         $details = $this->entityManager->getRepository(UserDetails::class)
-            ->findOneBy(['user' => $userDetails->getUser()]);
+            ->findOneBy(['user' => $this->security->getUser()]);
+
 
         if (null === $details) {
             $this->entityManager->persist($userDetails);
