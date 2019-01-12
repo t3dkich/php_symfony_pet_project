@@ -151,7 +151,11 @@ class OfferService implements OfferServiceInterface
 
         /** @var UploadedFile $picture */
             $picture = $animal->getPicture();
-            $fileName = md5(uniqid()) . '.' . $picture->guessExtension();
+            if ($picture->guessExtension() === 'jpeg') {
+                $fileName = md5(uniqid()) . '.jpg';
+            } else {
+                $fileName = md5(uniqid()) . '.' . $picture->guessExtension();
+            }
             $picture->move($this->container->getParameter('image_directory'), $fileName);
             $offer->getAnimal()->setPicture($fileName);
 
@@ -205,7 +209,11 @@ class OfferService implements OfferServiceInterface
         /** @var UploadedFile $picture */
         $picture = $animalEdited->getPicture();
         if ($picture && gettype($picture) !== 'string') {
-            $fileName = md5(uniqid()) . '.' . $picture->guessExtension();
+            if ($picture->guessExtension() === 'jpeg') {
+                $fileName = md5(uniqid()) . '.jpg';
+            } else {
+                $fileName = md5(uniqid()) . '.' . $picture->guessExtension();
+            }
             $picture->move($this->container->getParameter('image_directory'), $fileName);
             $existingOffer->getAnimal()->setPicture($fileName);
         }
