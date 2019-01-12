@@ -90,6 +90,7 @@ class User implements UserInterface
      * @var UserDetails
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\UserDetails", mappedBy="user")
+     * @ORM\Column(name="user_detail_id", type="integer", nullable=true)
      */
     private $details;
 
