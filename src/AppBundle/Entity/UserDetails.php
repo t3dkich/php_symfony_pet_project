@@ -94,7 +94,7 @@ class UserDetails
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="details")
-     * @ORM\Column(name="user_id", type="integer", nullable=false)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
 
