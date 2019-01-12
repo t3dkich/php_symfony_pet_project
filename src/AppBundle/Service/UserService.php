@@ -98,8 +98,7 @@ class UserService implements UserServiceInterface
         $this->entityManager->persist($userDetails);
         $this->entityManager->flush();
 //        if (null === $details) {
-//            $this->entityManager->persist($userDetails);
-//            $this->entityManager->flush();
+//
 //        } else {
 //            $this->entityManager->merge($userDetails->setId($details->getId()));
 //            $this->entityManager->flush();

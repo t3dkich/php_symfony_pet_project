@@ -93,7 +93,7 @@ class UserDetails
     /**
      * @var User
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User", mappedBy="details")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\User", mappedBy="details")
      *
      */
     private $user;
