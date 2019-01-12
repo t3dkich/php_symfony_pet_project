@@ -99,8 +99,7 @@ class UserController extends Controller
                     'errors' => $errors
                 ]);
             }
-
-            $userDetails->setUser($this->getUser());
+            $this->getUser()->setDetails($userDetails);
             $this->userService->details($userDetails);
 
             $this->addFlash('info', 'You have successfully edited your profile.');
