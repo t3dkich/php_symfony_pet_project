@@ -53,6 +53,7 @@ class UserService implements UserServiceInterface
         $user->setPassword($password);
         $user->addRoles($role[0]);
 
+
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
