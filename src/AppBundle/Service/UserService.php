@@ -92,17 +92,20 @@ class UserService implements UserServiceInterface
 
     public function details(UserDetails $userDetails)
     {
-        $details = $this->entityManager->getRepository(UserDetails::class)
-            ->findOneBy(['user' => $this->security->getUser()]);
+//        $details = $this->entityManager->getRepository(UserDetails::class)
+//            ->findOneBy(['user' => $this->security->getUser()]);
+//
+//
+//        if (null === $details) {
+//            $this->entityManager->persist($userDetails);
+//            $this->entityManager->flush();
+//        } else {
+//            $this->entityManager->merge($userDetails->setId($details->getId()));
+//            $this->entityManager->flush();
+//        }
 
-
-        if (null === $details) {
-            $this->entityManager->persist($userDetails);
-            $this->entityManager->flush();
-        } else {
-            $this->entityManager->merge($userDetails->setId($details->getId()));
-            $this->entityManager->flush();
-        }
+        $this->entityManager->persist($userDetails);
+        $this->entityManager->flush();
     }
 
     public function getAll()
