@@ -44,7 +44,7 @@
                         <div class="card-body">
                             <h2 class="card-title">{{ offer.title }}</h2>
                             <img class="card-img-top" height="200px"
-                                 src="{{ asset('uploads/animal_images/') ~ offer.animal.picture }}"
+                                 src="{{ asset('uploads/') ~ offer.animal.picture }}"
                                  alt="Card image cap">
                             <span class="card-title"><small>type: </small> {{ offer.category.name }}</span>
                             {% if app.user %}
