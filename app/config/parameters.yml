@@ -1,12 +1,14 @@
 # This file is auto-generated during the composer install
 parameters:
-    database_host: mysql://b114a228ac75de:a6b962d9@eu-cdbr-west-02.cleardb.net/heroku_ff6f525ab415143?reconnect=true
-    database_port: null
+    database_host: eu-cdbr-west-02.cleardb.net
+    database_port: 3306
     database_name: phpcourseproject
-    database_user: root
-    database_password: null
+    database_user: b114a228ac75de
+    database_password: a6b962d9
     mailer_transport: smtp
-    mailer_host: 127.0.0.1
+    mailer_host: null
     mailer_user: null
     mailer_password: null
     secret: bf36ad1ac10f7febf9926cb57797f48d5b9bed63
+
+
