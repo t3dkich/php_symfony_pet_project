@@ -2,7 +2,7 @@
 parameters:
     database_host: eu-cdbr-west-02.cleardb.net
     database_port: 3306
-    database_name: phpcourseproject
+    database_name: default
     database_user: b114a228ac75de
     database_password: a6b962d9
     mailer_transport: smtp
