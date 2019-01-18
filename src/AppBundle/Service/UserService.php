@@ -95,10 +95,10 @@ class UserService implements UserServiceInterface
     {
 //        $details = $this->entityManager->getRepository(UserDetails::class)
 //            ->findOneBy(['user' => $this->security->getUser()]);
-        $this->entityManager->persist($userDetails);
-        $this->entityManager->flush();
-//        if (null === $details) {
 //
+//        if (null === $details) {
+//        $this->entityManager->persist($userDetails);
+//        $this->entityManager->flush();
 //        } else {
 //            $this->entityManager->merge($userDetails->setId($details->getId()));
 //            $this->entityManager->flush();
